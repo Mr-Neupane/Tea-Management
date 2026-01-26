@@ -95,6 +95,7 @@ namespace TeaManagement.Migrations
                         .HasColumnName("ledger_id");
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("name");
 
