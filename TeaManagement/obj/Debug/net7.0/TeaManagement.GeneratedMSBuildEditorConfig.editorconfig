@@ -1,0 +1,81 @@
+is_global = true
+build_property.TargetFramework = net7.0
+build_property.TargetPlatformMinVersion = 
+build_property.UsingMicrosoftNETSdkWeb = true
+build_property.ProjectTypeGuids = 
+build_property.InvariantGlobalization = 
+build_property.PlatformNeutralAssembly = 
+build_property.EnforceExtendedAnalyzerRules = 
+build_property._SupportedPlatformList = Linux,macOS,Windows
+build_property.RootNamespace = TeaManagement
+build_property.RootNamespace = TeaManagement
+build_property.ProjectDir = F:\TeaManagement\TeaManagement\
+build_property.RazorLangVersion = 7.0
+build_property.SupportLocalizedComponentNames = 
+build_property.GenerateRazorMetadataSourceChecksumAttributes = true
+build_property.MSBuildProjectDirectory = F:\TeaManagement\TeaManagement
+build_property._RazorSourceGeneratorDebug = 
+
+[F:/TeaManagement/TeaManagement/Views/Bonus/addbonus.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQm9udXNcYWRkYm9udXMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[F:/TeaManagement/TeaManagement/Views/Factory/EditFactory.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRmFjdG9yeVxFZGl0RmFjdG9yeS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[F:/TeaManagement/TeaManagement/Views/Factory/factoryreport.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRmFjdG9yeVxmYWN0b3J5cmVwb3J0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[F:/TeaManagement/TeaManagement/Views/Factory/newfactory.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRmFjdG9yeVxuZXdmYWN0b3J5LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[F:/TeaManagement/TeaManagement/Views/Home/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[F:/TeaManagement/TeaManagement/Views/Home/Privacy.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQcml2YWN5LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[F:/TeaManagement/TeaManagement/Views/Ledger/CreateLedger.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTGVkZ2VyXENyZWF0ZUxlZGdlci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[F:/TeaManagement/TeaManagement/Views/Ledger/LedgerReport.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTGVkZ2VyXExlZGdlclJlcG9ydC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[F:/TeaManagement/TeaManagement/Views/Migration/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTWlncmF0aW9uXEluZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[F:/TeaManagement/TeaManagement/Views/Product/AddProducts.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvZHVjdFxBZGRQcm9kdWN0cy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[F:/TeaManagement/TeaManagement/Views/Sale/NewSale.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2FsZVxOZXdTYWxlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[F:/TeaManagement/TeaManagement/Views/Shared/Error.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXEVycm9yLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[F:/TeaManagement/TeaManagement/Views/Shared/_ValidationScriptsPartial.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[F:/TeaManagement/TeaManagement/Views/_ViewImports.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[F:/TeaManagement/TeaManagement/Views/_ViewStart.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdTdGFydC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[F:/TeaManagement/TeaManagement/Views/Shared/_Layout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = b-15iw2y1php

@@ -1,0 +1,49 @@
+﻿@model TeaManagement.ViewModels.NewFactoryVm
+
+@{
+    ViewData["Title"] = "Add Factory";
+}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">   <!-- Controls card width -->
+            <div class="card shadow-sm">
+                <div class="card-header text-center">
+                    <h5 class="mb-0">New Factory</h5>
+                </div>
+
+                <div class="card-body">
+                    <form method="post" asp-action="NewFactory">
+                        <div class="mb-3">
+                            <label asp-for="FactoryName">Factory Name</label>
+                            <input asp-for="FactoryName" class="form-control" placeholder="Enter factory name"/>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="FactoryContact">Contact Number</label>
+                            <input asp-for="FactoryContact" class="form-control" placeholder="Enter contact number"/>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="FactoryAddress">Address</label>
+                            <input asp-for="FactoryAddress" class="form-control" placeholder="Enter location"/>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="FactoryCountry">Country</label>
+                            <select asp-for="FactoryCountry" class="form-control">
+                                <option value="0">Select Country</option>
+                                <option value="Nepal">Nepal</option>
+                                <option value="India">India</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <button type="submit" class="btn btn-primary ">Save</button>
+                            <button asp-action="NewFactory" formmethod="get" class="btn btn-danger">Reset</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

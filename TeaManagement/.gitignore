@@ -1,0 +1,50 @@
+﻿## Build results
+bin/
+obj/
+out/
+
+## Visual Studio files
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+## Rider / VS Code
+.idea/
+.vscode/
+
+## ASP.NET runtime files
+wwwroot/lib/
+wwwroot/dist/
+
+## Logs
+*.log
+
+## OS files
+.DS_Store
+Thumbs.db
+
+## NuGet
+packages/
+*.nupkg
+*.snupkg
+
+## Dotnet tools
+.dotnet/
+
+## Environment files
+appsettings.Development.json
+appsettings.Local.json
+
+## Publish output
+publish/
+*.Publish.xml
+*.pubxml
+*.azurePubxml
+
+## Secrets
+secrets.json
+
+## Test results
+TestResults/

@@ -1,0 +1,94 @@
+﻿@model TeaManagement.ViewModels.NewBonusVm
+
+@{
+    ViewData["Title"] = "Add Bonus";
+}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-5">   <!-- Controls card width -->
+            <div class="card shadow-sm">
+                <div class="card-header text-center">
+                    <h5 class="mb-0">New Bonus Setup</h5>
+                </div>
+
+                <div class="card-body">
+                    <form method="post" asp-action="AddBonus">
+                        <div class="mb-3">
+                            <label asp-for="Name">Bonus Name</label>
+                            <input asp-for="Name" class="form-control"/>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="BonusPerKg">Bonus Per KG <span class="text-danger">*</span></label>
+                            <input asp-for="BonusPerKg" type="number" required="required" class="form-control"/>
+                        </div>
+
+
+                        <div class="mb-3">
+                            <label asp-for="FactoryId">Select Factory</label>
+                            <select asp-for="FactoryId" required="required" id="factoryid" class="form-control">
+                                @if (Model.FactorySelectList.SelectedValue != null)
+                                {
+                                    @foreach (var f in Model.FactorySelectList)
+                                    {
+                                        <option value="@f.Value">@f.Text</option>
+                                    }
+                                }
+
+                            </select>
+                        </div>
+                        <div class="mb-3 form-check form-check-inline">
+                            <label asp-for="IsNewLedger" class="form-check-label">Create Ledger</label>
+                            <input type="checkbox" class="form-check-input" asp-for="IsNewLedger"/>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="LedgerId">Select Bonus Ledger</label>
+                            <select asp-for="LedgerId" required="required" id="ledgerid" class="form-control">
+                                <option>Select Ledger..</option>
+                                @if (Model.BonusLedgerList.SelectedValue != null)
+                                {
+                                    foreach (var l in Model.BonusLedgerList)
+                                    {
+                                        <option value="@l.Value">@l.Text</option>
+                                    }
+                                }
+
+                            </select>
+                        </div>
+
+                        <div>
+                            <button type="submit" class="btn btn-primary ">Save</button>
+                            <button asp-action="AddBonus" formmethod="get" class="btn btn-danger">Reset</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+
+        $.ajax({
+            url: '/Factory/GetFactories',
+            type: 'GET',
+            success: function (data) {
+                $("#factoryid").empty();
+                $("#factoryid").append('<option value="">Select</option>');
+
+                $.each(data, function (i, factory) {
+                    $("#factoryid").append(
+                        `<option value="${factory.id}">${factory.name}</option>`
+                    );
+                });
+            },
+            error: function () {
+                alert("Failed to load factories");
+            }
+        });
+
+    });
+</script>
