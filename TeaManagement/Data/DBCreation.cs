@@ -44,7 +44,7 @@ namespace TeaManagement.Data
             }
 
             // Apply EF migrations
-            var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+            var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
             dbContext.Database.Migrate();
         }
     }

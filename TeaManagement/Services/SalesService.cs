@@ -7,9 +7,9 @@ namespace TeaManagement.Services;
 
 public class SalesService : ISalesService
 {
-    private readonly AppDbContext _context;
+    private readonly ApplicationDbContext _context;
 
-    public SalesService(AppDbContext context)
+    public SalesService(ApplicationDbContext context)
     {
         _context = context;
     }
@@ -24,8 +24,10 @@ public class SalesService : ISalesService
             Price = dto.Price,
             WaterQuantity = dto.WaterQuantity,
             NetQuantity = dto.Quantity - dto.WaterQuantity,
+            TransactionId = dto.TransactionId,
         };
         await _context.Sales.AddAsync(sales);
+        await _context.SaveChangesAsync();
         return sales;
     }
 }

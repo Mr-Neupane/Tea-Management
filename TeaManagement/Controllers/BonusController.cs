@@ -16,11 +16,11 @@ public class BonusController : Controller
 {
     private readonly BonusManager _bonusManager;
     private readonly IToastNotification _toastNotification;
-    private readonly AppDbContext _context;
+    private readonly ApplicationDbContext _context;
     private readonly DropdownProvider _dropdownProvider;
 
     public BonusController(IToastNotification toastNotification, DropdownProvider provider,
-        BonusManager bonusManager, AppDbContext context)
+        BonusManager bonusManager, ApplicationDbContext context)
     {
         _toastNotification = toastNotification;
         _dropdownProvider = provider;

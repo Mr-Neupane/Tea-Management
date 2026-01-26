@@ -11,6 +11,8 @@ namespace TeaManagement.Entities
         public decimal Price { get; set; }
         public decimal WaterQuantity { get; set; } = 0;
         public decimal NetQuantity { get; set; }
+        public int TransactionId { get; set; }
+        public virtual AccountingTransaction Transaction { get; set; }
 
 
         public virtual NewFactory Factory { get; set; }

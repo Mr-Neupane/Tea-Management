@@ -14,12 +14,12 @@ namespace TeaManagement.Controllers;
 public class FactoryController : Controller
 {
     private readonly FactoryManager _factoryManager;
-    private readonly AppDbContext _context;
+    private readonly ApplicationDbContext _context;
     private readonly IToastNotification _toastNotification;
     private readonly IFactoryService _factoryService;
 
 
-    public FactoryController(FactoryManager factoryManager, AppDbContext context, IToastNotification toastNotification,
+    public FactoryController(FactoryManager factoryManager, ApplicationDbContext context, IToastNotification toastNotification,
         IFactoryService factoryService)
     {
         _factoryManager = factoryManager;

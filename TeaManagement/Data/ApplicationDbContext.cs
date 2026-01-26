@@ -1,12 +1,10 @@
-﻿using Microsoft.AspNetCore.Builder;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.EntityFrameworkCore;
 using TeaManagement.Entities;
 using Ledger = TeaManagement.Entities.Ledger;
 
-public class AppDbContext : DbContext
+public class ApplicationDbContext : DbContext
 {
-    public AppDbContext(DbContextOptions<AppDbContext> options)
+    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
         : base(options)
     {
     }

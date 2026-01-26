@@ -7,9 +7,9 @@ namespace TeaManagement.Services;
 
 public class BonusService : IBonusService
 {
-    private readonly AppDbContext _context;
+    private readonly ApplicationDbContext _context;
 
-    public BonusService(AppDbContext context)
+    public BonusService(ApplicationDbContext context)
     {
         _context = context;
     }

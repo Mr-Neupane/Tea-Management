@@ -11,10 +11,10 @@ namespace TeaManagement.Controllers;
 
 public class MigrationController : Controller
 {
-    private readonly AppDbContext _context;
+    private readonly ApplicationDbContext _context;
     private readonly IToastNotification _toastNotification;
 
-    public MigrationController(AppDbContext context, IToastNotification toastNotification)
+    public MigrationController(ApplicationDbContext context, IToastNotification toastNotification)
     {
         _context = context;
         _toastNotification = toastNotification;
@@ -62,7 +62,7 @@ public class MigrationController : Controller
 
 
             var existingLedger = await _context.Ledgers.Where(x => x.Id == -1).FirstOrDefaultAsync();
-            if (existingLedger==null)
+            if (existingLedger == null)
             {
                 var defLedger = new List<Ledger>()
                 {
@@ -94,17 +94,49 @@ public class MigrationController : Controller
                     {
                         Id = -3,
                         Name = "Other Income",
+                        Code = "160.2",
+                        ParentId = -3,
+                        SubParentId = null
+                    },
+                    new()
+                    {
+                        Id = -12,
+                        Name = "Saman Bikri Account",
                         Code = "160.1",
                         ParentId = -3,
                         SubParentId = null
                     },
                     new()
                     {
+                        Id = -13,
+                        Name = "Stock Sales",
+                        Code = "160.1.1",
+                        ParentId = null,
+                        SubParentId = -12
+                    },
+                    new()
+                    {
                         Id = -4,
                         Name = "Other Expenses",
+                        Code = "150.2",
+                        ParentId = -4,
+                        SubParentId = null
+                    },
+                    new()
+                    {
+                        Id = -10,
+                        Name = "Saman Kharid",
                         Code = "150.1",
                         ParentId = -4,
                         SubParentId = null
+                    },
+                    new()
+                    {
+                        Id = -11,
+                        Name = "Stock Purchase",
+                        Code = "150.1.1",
+                        ParentId = null,
+                        SubParentId = -10
                     },
                     new()
                     {

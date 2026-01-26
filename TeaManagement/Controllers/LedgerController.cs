@@ -8,11 +8,11 @@ namespace TeaManagement.Controllers;
 
 public class LedgerController : Controller
 {
-    private readonly AppDbContext _context;
+    private readonly ApplicationDbContext _context;
     private readonly ILedgerService _ledgerService;
     private readonly IToastNotification _toastNotification;
 
-    public LedgerController(AppDbContext context, ILedgerService ledgerService, IToastNotification toastNotification)
+    public LedgerController(ApplicationDbContext context, ILedgerService ledgerService, IToastNotification toastNotification)
     {
         _context = context;
         _ledgerService = ledgerService;

@@ -9,9 +9,9 @@ namespace TeaManagement.Services
 {
     public class FactoryService : IFactoryService
     {
-        private readonly AppDbContext _context;
+        private readonly ApplicationDbContext _context;
 
-        public FactoryService(AppDbContext context)
+        public FactoryService(ApplicationDbContext context)
         {
             _context = context;
         }

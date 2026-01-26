@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using TeaManagement.Dtos;
 using TeaManagement.Entities;
 using TeaManagement.Interface;
@@ -10,9 +7,9 @@ namespace TeaManagement.Services;
 
 public class LedgerService : ILedgerService
 {
-    private readonly AppDbContext _context;
+    private readonly ApplicationDbContext _context;
 
-    public LedgerService(AppDbContext context)
+    public LedgerService(ApplicationDbContext context)
     {
         _context = context;
     }

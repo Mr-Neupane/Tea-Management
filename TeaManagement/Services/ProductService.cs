@@ -6,9 +6,9 @@ namespace TeaManagement.Services;
 
 public class ProductService : IProductService
 {
-    private readonly AppDbContext _context;
+    private readonly ApplicationDbContext _context;
 
-    public ProductService(AppDbContext context)
+    public ProductService(ApplicationDbContext context)
     {
         _context = context;
     }

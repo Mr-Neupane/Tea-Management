@@ -16,6 +16,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<IFactoryService, FactoryService>();
+builder.Services.AddScoped<IAccountingTransactionService, AccountingTransactionService>();
 builder.Services.AddScoped<IBonusService, BonusService>();
 builder.Services.AddScoped<ISalesService, SalesService>();
 builder.Services.AddScoped<IProductService, ProductService>();
@@ -23,8 +24,10 @@ builder.Services.AddScoped<ILedgerService, LedgerService>();
 builder.Services.AddScoped<DropdownProvider>();
 builder.Services.AddScoped<FactoryManager>();
 builder.Services.AddScoped<BonusManager>();
+builder.Services.AddScoped<LedgerIdProvider>();
+builder.Services.AddScoped<SalesTransactionManager>();
 
-builder.Services.AddDbContext<AppDbContext>(options =>
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")).UseSnakeCaseNamingConvention());
 builder.Services.AddControllersWithViews()
     .AddNToastNotifyToastr(new ToastrOptions
@@ -39,7 +42,7 @@ builder.Services.AddControllersWithViews()
 var app = builder.Build();
 
 using var scope = app.Services.CreateScope();
-var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
 
 db.Database.Migrate();
 

@@ -4,21 +4,22 @@ using Microsoft.AspNetCore.Mvc;
 using NToastNotify;
 using TeaManagement.Dtos;
 using TeaManagement.Interface;
+using TeaManagement.Manager;
 using TeaManagement.ViewModels;
 
 namespace TeaManagement.Controllers;
 
 public class SaleController : Controller
 {
-    private readonly ISalesService _salesService;
+    private readonly SalesTransactionManager  _salesTransactionManager;
     private readonly IToastNotification _toastNotification;
 
-    public SaleController(ISalesService salesService, IToastNotification toastMessage)
-    {
-        _salesService = salesService;
-        _toastNotification = toastMessage;
-    }
 
+    public SaleController(SalesTransactionManager salesTransactionManager, IToastNotification toastNotification)
+    {
+        _salesTransactionManager = salesTransactionManager;
+        _toastNotification = toastNotification;
+    }
 
     public IActionResult NewSale()
     {
@@ -33,12 +34,15 @@ public class SaleController : Controller
             var dto = new SalesDto
             {
                 ProductId = vm.ProductId,
+                TxnDate = vm.TxnDate,
                 Quantity = vm.Quantity,
                 Price = vm.Price,
                 WaterQuantity = vm.WaterQuantity,
-                FactoryId = vm.FactoryId,
+                SalesAmount = Math.Round((vm.Quantity - vm.WaterQuantity) * vm.Price, 2),
+                FactoryId = vm.FactoryId
             };
-            await _salesService.AddSalesAsync(dto);
+
+            await _salesTransactionManager.AddSales(dto);
             _toastNotification.AddSuccessToastMessage("Sales added successfully");
             return View();
         }

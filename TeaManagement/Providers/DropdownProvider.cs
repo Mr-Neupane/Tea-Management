@@ -9,9 +9,9 @@ namespace TeaManagement.Providers;
 
 public class DropdownProvider
 {
-    private readonly AppDbContext _context;
+    private readonly ApplicationDbContext _context;
 
-    public DropdownProvider(AppDbContext context)
+    public DropdownProvider(ApplicationDbContext context)
     {
         _context = context;
     }
