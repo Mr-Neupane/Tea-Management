@@ -2,11 +2,11 @@
 
 namespace TeaManagement.Providers;
 
-public class LedgerIdProvider
+public class IdProvider
 {
     private readonly ApplicationDbContext _context;
 
-    public LedgerIdProvider(ApplicationDbContext context)
+    public IdProvider(ApplicationDbContext context)
     {
         _context = context;
     }
@@ -22,6 +22,19 @@ public class LedgerIdProvider
         else
         {
             return facLedgerId;
+        }
+    }
+
+    public int GetStakeholderIdByLedgerId(int ledgerId)
+    {
+        var res = _context.Stakeholders.SingleOrDefault(x => x.LedgerId == ledgerId);
+        if (res != null)
+        {
+            return res.LedgerId;
+        }
+        else
+        {
+            throw new Exception("Stakeholder not found");
         }
     }
 }

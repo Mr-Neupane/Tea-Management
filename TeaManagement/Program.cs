@@ -21,10 +21,12 @@ builder.Services.AddScoped<IBonusService, BonusService>();
 builder.Services.AddScoped<ISalesService, SalesService>();
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<ILedgerService, LedgerService>();
+builder.Services.AddScoped<IStakeholderService, StakeholderService>();
+builder.Services.AddScoped<IReceivableService, ReceivableService>();
 builder.Services.AddScoped<DropdownProvider>();
 builder.Services.AddScoped<FactoryManager>();
 builder.Services.AddScoped<BonusManager>();
-builder.Services.AddScoped<LedgerIdProvider>();
+builder.Services.AddScoped<IdProvider>();
 builder.Services.AddScoped<SalesTransactionManager>();
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>

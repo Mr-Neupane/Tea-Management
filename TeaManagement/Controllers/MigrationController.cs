@@ -165,6 +165,46 @@ public class MigrationController : Controller
                 };
                 await _context.Ledgers.AddRangeAsync(defLedger);
                 await _context.SaveChangesAsync();
+
+                var existingCat = await _context.Categories.Where(x => x.Id == -1).FirstOrDefaultAsync();
+                if (existingCat == null)
+                {
+                    var defCat = new Category
+                    {
+                        Id = -1,
+                        Name = "Tea",
+                        ParentCategoryId = null
+                    };
+                    await _context.Categories.AddAsync(defCat);
+                    await _context.SaveChangesAsync();
+                }
+
+                var existingUnit = await _context.ProductUnits.Where(x => x.Id == -1).FirstOrDefaultAsync();
+                if (existingUnit == null)
+                {
+                    var unit = new ProductUnit
+                    {
+                        Id = -1,
+                        UnitName = "KG",
+                        UnitDescription = "Kilogram"
+                    };
+                    await _context.ProductUnits.AddAsync(unit);
+                    await _context.SaveChangesAsync();
+                }
+
+                var existingProd = await _context.Products.Where(x => x.Id == -1).FirstOrDefaultAsync();
+                if (existingProd == null)
+                {
+                    var defProd = new Product
+                    {
+                        Id = -1,
+                        Name = "Green Tea Leaves",
+                        CategoryId = -1,
+                        UnitId = -1
+                    };
+                    await _context.Products.AddAsync(defProd);
+                    await _context.SaveChangesAsync();
+                }
             }
 
             _toastNotification.AddSuccessToastMessage("Migration added successfully.");

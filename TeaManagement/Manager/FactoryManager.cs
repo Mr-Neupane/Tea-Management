@@ -1,6 +1,6 @@
-﻿using System.Threading.Tasks;
-using System.Transactions;
+﻿using System.Transactions;
 using TeaManagement.Dtos;
+using TeaManagement.Enums;
 using TeaManagement.Interface;
 
 namespace TeaManagement.Manager;
@@ -9,11 +9,15 @@ public class FactoryManager
 {
     private readonly IFactoryService _factoryService;
     private readonly ILedgerService _ledgerService;
+    private readonly IStakeholderService _stakeholderService;
 
-    public FactoryManager(IFactoryService factoryService, ILedgerService ledgerService)
+
+    public FactoryManager(IFactoryService factoryService, ILedgerService ledgerService,
+        IStakeholderService stakeholderService)
     {
         _factoryService = factoryService;
         _ledgerService = ledgerService;
+        _stakeholderService = stakeholderService;
     }
 
     public async Task AddNewFactory(NewFactoryDto dto, NewLedgerDto ledger)
@@ -30,6 +34,18 @@ public class FactoryManager
                 LedgerId = newLedger.Id
             };
             await _factoryService.AddFactoryAsync(fac);
+
+            var stakeholder = new StakeholderDto
+            {
+                StakeholderType = (int)StakeholderType.Customer,
+                FullName = dto.Name.Trim(),
+                Email = null,
+                PhoneNumber = dto.ContactNumber,
+                Address = dto.Address,
+                LedgerId = newLedger.Id,
+            };
+            await _stakeholderService.RecordStakeholderAsync(stakeholder);
+
             scope.Complete();
         }
     }

@@ -18,9 +18,6 @@ public class BonusService : IBonusService
     {
         var bonus = new AddBonus
         {
-            RecStatus = (char)RecStatus.Active,
-            Status = (int)Status.Active,
-            RecById = -1,
             Name = dto.Name,
             FactoryId = dto.FactoryId,
             BonusPerKg = dto.BonusPerKg,

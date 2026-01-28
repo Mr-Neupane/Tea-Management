@@ -24,7 +24,6 @@ public class SalesService : ISalesService
             Price = dto.Price,
             WaterQuantity = dto.WaterQuantity,
             NetQuantity = dto.Quantity - dto.WaterQuantity,
-            TransactionId = dto.TransactionId,
         };
         await _context.Sales.AddAsync(sales);
         await _context.SaveChangesAsync();

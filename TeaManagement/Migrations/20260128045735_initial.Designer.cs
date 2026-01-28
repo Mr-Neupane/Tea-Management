@@ -11,8 +11,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace TeaManagement.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260126125711_ alter sales table ")]
-    partial class altersalestable
+    [Migration("20260128045735_initial")]
+    partial class initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -74,6 +74,15 @@ namespace TeaManagement.Migrations
                         .HasColumnType("integer")
                         .HasColumnName("type_id");
 
+                    b.Property<string>("VoucherNo")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("voucher_no");
+
+                    b.Property<int>("VoucherTypeId")
+                        .HasColumnType("integer")
+                        .HasColumnName("voucher_type_id");
+
                     b.HasKey("Id")
                         .HasName("pk_transactions");
 
@@ -129,6 +138,46 @@ namespace TeaManagement.Migrations
                         .HasDatabaseName("ix_bonus_factory_id");
 
                     b.ToTable("bonus", "general_setup");
+                });
+
+            modelBuilder.Entity("TeaManagement.Entities.Category", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("name");
+
+                    b.Property<int?>("ParentCategoryId")
+                        .HasColumnType("integer")
+                        .HasColumnName("parent_category_id");
+
+                    b.Property<int>("RecById")
+                        .HasColumnType("integer")
+                        .HasColumnName("rec_by_id");
+
+                    b.Property<DateTime>("RecDate")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("rec_date");
+
+                    b.Property<char>("RecStatus")
+                        .HasColumnType("character(1)")
+                        .HasColumnName("rec_status");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("integer")
+                        .HasColumnName("status");
+
+                    b.HasKey("Id")
+                        .HasName("pk_product_category");
+
+                    b.ToTable("product_category", "inventory");
                 });
 
             modelBuilder.Entity("TeaManagement.Entities.CoaLedger", b =>
@@ -272,6 +321,45 @@ namespace TeaManagement.Migrations
                     b.ToTable("factory", "general_setup");
                 });
 
+            modelBuilder.Entity("TeaManagement.Entities.Payable", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("numeric")
+                        .HasColumnName("amount");
+
+                    b.Property<int>("RecById")
+                        .HasColumnType("integer")
+                        .HasColumnName("rec_by_id");
+
+                    b.Property<DateTime>("RecDate")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("rec_date");
+
+                    b.Property<char>("RecStatus")
+                        .HasColumnType("character(1)")
+                        .HasColumnName("rec_status");
+
+                    b.Property<int>("StakeholderId")
+                        .HasColumnType("integer")
+                        .HasColumnName("stakeholder_id");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("integer")
+                        .HasColumnName("status");
+
+                    b.HasKey("Id")
+                        .HasName("pk_payable");
+
+                    b.ToTable("payable", "accounting");
+                });
+
             modelBuilder.Entity("TeaManagement.Entities.Product", b =>
                 {
                     b.Property<int>("Id")
@@ -280,6 +368,10 @@ namespace TeaManagement.Migrations
                         .HasColumnName("id");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("integer")
+                        .HasColumnName("category_id");
 
                     b.Property<string>("Description")
                         .HasColumnType("text")
@@ -310,10 +402,113 @@ namespace TeaManagement.Migrations
                         .HasColumnType("integer")
                         .HasColumnName("status");
 
+                    b.Property<int>("UnitId")
+                        .HasColumnType("integer")
+                        .HasColumnName("unit_id");
+
                     b.HasKey("Id")
                         .HasName("pk_product");
 
-                    b.ToTable("product", "general_setup");
+                    b.HasIndex("CategoryId")
+                        .HasDatabaseName("ix_product_category_id");
+
+                    b.HasIndex("UnitId")
+                        .HasDatabaseName("ix_product_unit_id");
+
+                    b.ToTable("product", "inventory");
+                });
+
+            modelBuilder.Entity("TeaManagement.Entities.ProductUnit", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("RecById")
+                        .HasColumnType("integer")
+                        .HasColumnName("rec_by_id");
+
+                    b.Property<DateTime>("RecDate")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("rec_date");
+
+                    b.Property<char>("RecStatus")
+                        .HasColumnType("character(1)")
+                        .HasColumnName("rec_status");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("integer")
+                        .HasColumnName("status");
+
+                    b.Property<string>("UnitDescription")
+                        .HasColumnType("text")
+                        .HasColumnName("unit_description");
+
+                    b.Property<string>("UnitName")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("unit_name");
+
+                    b.HasKey("Id")
+                        .HasName("pk_unit");
+
+                    b.ToTable("unit", "inventory");
+                });
+
+            modelBuilder.Entity("TeaManagement.Entities.Receivable", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("numeric")
+                        .HasColumnName("amount");
+
+                    b.Property<int>("RecById")
+                        .HasColumnType("integer")
+                        .HasColumnName("rec_by_id");
+
+                    b.Property<DateTime>("RecDate")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("rec_date");
+
+                    b.Property<char>("RecStatus")
+                        .HasColumnType("character(1)")
+                        .HasColumnName("rec_status");
+
+                    b.Property<int>("StakeholderId")
+                        .HasColumnType("integer")
+                        .HasColumnName("stakeholder_id");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("integer")
+                        .HasColumnName("status");
+
+                    b.Property<int>("TransactionId")
+                        .HasColumnType("integer")
+                        .HasColumnName("transaction_id");
+
+                    b.Property<DateTime>("TxnDate")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("txn_date");
+
+                    b.HasKey("Id")
+                        .HasName("pk_receivable");
+
+                    b.HasIndex("StakeholderId")
+                        .HasDatabaseName("ix_receivable_stakeholder_id");
+
+                    b.HasIndex("TransactionId")
+                        .HasDatabaseName("ix_receivable_transaction_id");
+
+                    b.ToTable("receivable", "accounting");
                 });
 
             modelBuilder.Entity("TeaManagement.Entities.Sale", b =>
@@ -361,10 +556,6 @@ namespace TeaManagement.Migrations
                         .HasColumnType("integer")
                         .HasColumnName("status");
 
-                    b.Property<int>("TransactionId")
-                        .HasColumnType("integer")
-                        .HasColumnName("transaction_id");
-
                     b.Property<decimal>("WaterQuantity")
                         .HasColumnType("numeric")
                         .HasColumnName("water_quantity");
@@ -378,10 +569,66 @@ namespace TeaManagement.Migrations
                     b.HasIndex("ProductId")
                         .HasDatabaseName("ix_sales_product_id");
 
-                    b.HasIndex("TransactionId")
-                        .HasDatabaseName("ix_sales_transaction_id");
-
                     b.ToTable("sales", "inventory");
+                });
+
+            modelBuilder.Entity("TeaManagement.Entities.Stakeholder", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Address")
+                        .HasColumnType("text")
+                        .HasColumnName("address");
+
+                    b.Property<string>("Email")
+                        .HasColumnType("text")
+                        .HasColumnName("email");
+
+                    b.Property<string>("FullName")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("full_name");
+
+                    b.Property<int>("LedgerId")
+                        .HasColumnType("integer")
+                        .HasColumnName("ledger_id");
+
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("text")
+                        .HasColumnName("phone_number");
+
+                    b.Property<int>("RecById")
+                        .HasColumnType("integer")
+                        .HasColumnName("rec_by_id");
+
+                    b.Property<DateTime>("RecDate")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("rec_date");
+
+                    b.Property<char>("RecStatus")
+                        .HasColumnType("character(1)")
+                        .HasColumnName("rec_status");
+
+                    b.Property<int>("StakeholderType")
+                        .HasColumnType("integer")
+                        .HasColumnName("stakeholder_type");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("integer")
+                        .HasColumnName("status");
+
+                    b.HasKey("Id")
+                        .HasName("pk_stakeholders");
+
+                    b.HasIndex("LedgerId")
+                        .HasDatabaseName("ix_stakeholders_ledger_id");
+
+                    b.ToTable("stakeholders", "stakeholder");
                 });
 
             modelBuilder.Entity("TeaManagement.Entities.TransactionDetails", b =>
@@ -465,6 +712,48 @@ namespace TeaManagement.Migrations
                     b.Navigation("Ledger");
                 });
 
+            modelBuilder.Entity("TeaManagement.Entities.Product", b =>
+                {
+                    b.HasOne("TeaManagement.Entities.Category", "Category")
+                        .WithMany()
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_product_product_category_category_id");
+
+                    b.HasOne("TeaManagement.Entities.ProductUnit", "Unit")
+                        .WithMany()
+                        .HasForeignKey("UnitId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_product_unit_unit_id");
+
+                    b.Navigation("Category");
+
+                    b.Navigation("Unit");
+                });
+
+            modelBuilder.Entity("TeaManagement.Entities.Receivable", b =>
+                {
+                    b.HasOne("TeaManagement.Entities.Stakeholder", "Stakeholder")
+                        .WithMany()
+                        .HasForeignKey("StakeholderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_receivable_stakeholders_stakeholder_id");
+
+                    b.HasOne("TeaManagement.Entities.AccountingTransaction", "Transaction")
+                        .WithMany()
+                        .HasForeignKey("TransactionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_receivable_transactions_transaction_id");
+
+                    b.Navigation("Stakeholder");
+
+                    b.Navigation("Transaction");
+                });
+
             modelBuilder.Entity("TeaManagement.Entities.Sale", b =>
                 {
                     b.HasOne("TeaManagement.Entities.NewFactory", "Factory")
@@ -481,18 +770,21 @@ namespace TeaManagement.Migrations
                         .IsRequired()
                         .HasConstraintName("fk_sales_product_product_id");
 
-                    b.HasOne("TeaManagement.Entities.AccountingTransaction", "Transaction")
-                        .WithMany()
-                        .HasForeignKey("TransactionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("fk_sales_transactions_transaction_id");
-
                     b.Navigation("Factory");
 
                     b.Navigation("Product");
+                });
 
-                    b.Navigation("Transaction");
+            modelBuilder.Entity("TeaManagement.Entities.Stakeholder", b =>
+                {
+                    b.HasOne("TeaManagement.Entities.Ledger", "Ledger")
+                        .WithMany()
+                        .HasForeignKey("LedgerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_stakeholders_ledger_ledger_id");
+
+                    b.Navigation("Ledger");
                 });
 
             modelBuilder.Entity("TeaManagement.Entities.TransactionDetails", b =>
