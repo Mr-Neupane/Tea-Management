@@ -1,11 +1,8 @@
-﻿using System;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using NToastNotify;
 using TeaManagement.Dtos;
-using TeaManagement.Interface;
 using TeaManagement.Manager;
 using TeaManagement.Providers;
 using TeaManagement.ViewModels;
@@ -29,10 +26,10 @@ public class BonusController : Controller
     }
 
     // GET
-    public async Task<IActionResult> AddBonus()
+    public IActionResult AddBonus()
     {
-        var factories = await _dropdownProvider.FactorySelectList();
-        var bonusLedger = await _dropdownProvider.BonusLedgerList();
+        var factories = _dropdownProvider.GetAllFactories();
+        var bonusLedger = _dropdownProvider.GetAllBonusLedgers();
         var vm = new NewBonusVm
         {
             FactorySelectList = new SelectList(factories,

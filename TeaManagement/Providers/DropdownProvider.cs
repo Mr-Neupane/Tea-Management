@@ -1,8 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
+﻿using TeaManagement.Dtos;
 using TeaManagement.Enums;
 
 namespace TeaManagement.Providers;
@@ -16,15 +12,44 @@ public class DropdownProvider
         _context = context;
     }
 
-    public async Task<List<SelectListItem>> FactorySelectList()
+    public List<DropdownListDto> GetAllFactories()
     {
-        var factories = await _context.Factories.Where(x => x.Status == (int)Status.Active).ToListAsync();
-        return factories.Select(x => new SelectListItem { Text = x.Name, Value = x.Id.ToString() }).ToList();
+        var factories = _context.Factories.Where(x => x.Status == (int)Status.Active).Select(x => new DropdownListDto()
+        {
+            Id = x.Id,
+            Name = x.Name
+        }).ToList();
+        return factories;
     }
 
-    public async Task<List<SelectListItem>> BonusLedgerList()
+    public List<DropdownListDto> GetAllBonusLedgers()
     {
-        var ledgers = await _context.Ledgers.Where(x => x.SubParentId == -3).ToListAsync();
-        return ledgers.Select(x => new SelectListItem { Text = x.Name, Value = x.Id.ToString() }).ToList();
+        var ledgers = _context.Ledgers.Where(x => x.SubParentId == -3).Select(x => new DropdownListDto()
+        {
+            Id = x.Id,
+            Name = x.Name
+        }).ToList();
+        return ledgers;
+    }
+
+    public List<DropdownListDto> GetAllProductCategory()
+    {
+        var cat = _context.Categories.Where(x => x.Status == (int)Status.Active).Select(x => new DropdownListDto
+        {
+            Id = x.Id,
+            Name = x.Name
+        }).ToList();
+        return cat;
+    }
+
+    public List<DropdownListDto> GetAllProducts()
+    {
+        var prod = _context.Products.Where(x => x.Status == (int)Status.Active).Select(x => new DropdownListDto
+            {
+                Id = x.Id,
+                Name = x.Name
+            })
+            .ToList();
+        return prod;
     }
 }

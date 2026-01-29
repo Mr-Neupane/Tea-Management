@@ -1,29 +1,41 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using NToastNotify;
 using TeaManagement.Dtos;
 using TeaManagement.Interface;
 using TeaManagement.Manager;
+using TeaManagement.Providers;
 using TeaManagement.ViewModels;
 
 namespace TeaManagement.Controllers;
 
 public class SaleController : Controller
 {
-    private readonly SalesTransactionManager  _salesTransactionManager;
+    private readonly SalesTransactionManager _salesTransactionManager;
     private readonly IToastNotification _toastNotification;
+    private readonly DropdownProvider _dropdownProvider;
 
 
-    public SaleController(SalesTransactionManager salesTransactionManager, IToastNotification toastNotification)
+    public SaleController(SalesTransactionManager salesTransactionManager, IToastNotification toastNotification,
+        DropdownProvider dropdownProvider)
     {
         _salesTransactionManager = salesTransactionManager;
         _toastNotification = toastNotification;
+        _dropdownProvider = dropdownProvider;
     }
 
     public IActionResult NewSale()
     {
-        return View();
+        var prod = _dropdownProvider.GetAllProducts();
+        var fac = _dropdownProvider.GetAllFactories();
+        var vm = new NewSalesVm
+        {
+            Factories = new SelectList(fac, "Id", "Name"),
+            Products = new SelectList(prod, "Id", "Name"),
+        };
+        return View(vm);
     }
 
     [HttpPost]

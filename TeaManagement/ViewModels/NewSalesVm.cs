@@ -1,4 +1,6 @@
-﻿namespace TeaManagement.ViewModels;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+
+namespace TeaManagement.ViewModels;
 
 public class NewSalesVm
 {
@@ -9,4 +11,6 @@ public class NewSalesVm
     public decimal WaterQuantity { get; set; }
     public int FactoryId { get; set; }
     public string BillNo { get; set; }
+    public SelectList Factories { get; set; }
+    public SelectList Products { get; set; }
 }

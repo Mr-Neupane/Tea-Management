@@ -16,6 +16,13 @@
                             <label asp-for="ProductId">Select Product</label>
                             <select asp-for="ProductId" id="productid" class="form-control">
                                 <option value="0">Select</option>
+                                @if (Model.Products != null)
+                                {
+                                    foreach (var p in Model.Products)
+                                    {
+                                        <option value="@p.Value">@p.Text</option>
+                                    }
+                                }
 
                             </select>
                         </div>
@@ -39,6 +46,13 @@
                             <label asp-for="FactoryId">Select Factory</label>
                             <select asp-for="FactoryId" id="factoryid" class="form-control">
                                 <option value="0">Select</option>
+                                @if (Model.Factories != null)
+                                {
+                                    foreach (var p in Model.Factories)
+                                    {
+                                        <option value="@p.Value">@p.Text</option>
+                                    }
+                                }
 
                             </select>
                         </div>
@@ -53,52 +67,3 @@
         </div>
     </div>
 </div>
-
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-<script>
-    $(document).ready(function () {
-
-        $.ajax({
-            url: '/Factory/GetFactories',
-            type: 'GET',
-            success: function (data) {
-                $("#factoryid").empty();
-                $("#factoryid").append('<option value="">Select</option>');
-
-                $.each(data, function (i, factory) {
-                    $("#factoryid").append(
-                        `<option value="${factory.id}">${factory.name}</option>`
-                    );
-                });
-            },
-            error: function () {
-                alert("Failed to load factories");
-            }
-        });
-
-    });
-</script>
-<script>
-    $(document).ready(function () {
-
-        $.ajax({
-            url: '/Product/GetAllProducts',
-            type: 'GET',
-            success: function (data) {
-                $("#productid").empty();
-                $("#productid").append('<option value="">Select</option>');
-
-                $.each(data, function (i, products) {
-                    $("#productid").append(
-                        `<option value="${products.id}">${products.name}</option>`
-                    );
-                });
-            },
-            error: function () {
-                alert("Failed to load products");
-            }
-        });
-
-    });
-</script>

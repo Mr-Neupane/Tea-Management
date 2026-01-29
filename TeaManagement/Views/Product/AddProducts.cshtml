@@ -17,6 +17,20 @@
                             <label asp-for="ProductName">Product Name <span class="text-danger">*</span></label>
                             <input asp-for="ProductName" class="form-control" required="required"/>
                         </div>
+                        <div class="mb-3">
+                            <label asp-for="CategoryId">Select Factory</label>
+                            <select asp-for="CategoryId" required="required" id="factoryid" class="form-control">
+                                <option>Select Product Category..</option>
+                                @if (Model.Categories != null)
+                                {
+                                    @foreach (var f in Model.Categories)
+                                    {
+                                        <option value="@f.Value">@f.Text</option>
+                                    }
+                                }
+
+                            </select>
+                        </div>
 
                         <div class="mb-3">
                             <label asp-for="ProductPrice">Price Per KG</label>

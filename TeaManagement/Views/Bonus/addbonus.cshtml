@@ -27,7 +27,8 @@
                         <div class="mb-3">
                             <label asp-for="FactoryId">Select Factory</label>
                             <select asp-for="FactoryId" required="required" id="factoryid" class="form-control">
-                                @if (Model.FactorySelectList.SelectedValue != null)
+                                <option>Select Factory..</option>
+                                @if (Model.FactorySelectList != null)
                                 {
                                     @foreach (var f in Model.FactorySelectList)
                                     {
@@ -45,7 +46,7 @@
                             <label asp-for="LedgerId">Select Bonus Ledger</label>
                             <select asp-for="LedgerId" required="required" id="ledgerid" class="form-control">
                                 <option>Select Ledger..</option>
-                                @if (Model.BonusLedgerList.SelectedValue != null)
+                                @if (Model.BonusLedgerList != null)
                                 {
                                     foreach (var l in Model.BonusLedgerList)
                                     {
@@ -66,29 +67,3 @@
         </div>
     </div>
 </div>
-
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-<script>
-    $(document).ready(function () {
-
-        $.ajax({
-            url: '/Factory/GetFactories',
-            type: 'GET',
-            success: function (data) {
-                $("#factoryid").empty();
-                $("#factoryid").append('<option value="">Select</option>');
-
-                $.each(data, function (i, factory) {
-                    $("#factoryid").append(
-                        `<option value="${factory.id}">${factory.name}</option>`
-                    );
-                });
-            },
-            error: function () {
-                alert("Failed to load factories");
-            }
-        });
-
-    });
-</script>
