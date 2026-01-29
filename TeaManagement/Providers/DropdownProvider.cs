@@ -52,4 +52,22 @@ public class DropdownProvider
             .ToList();
         return prod;
     }
+
+    public List<DropdownListDto> GetStatus()
+    {
+        var statusList = new List<DropdownListDto>()
+        {
+            new()
+            {
+                Id = 1,
+                Name = "Active"
+            },
+            new()
+            {
+                Id = 2,
+                Name = "Reversed"
+            }
+        };
+        return statusList;
+    }
 }

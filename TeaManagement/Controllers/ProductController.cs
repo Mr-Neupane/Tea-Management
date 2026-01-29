@@ -5,6 +5,7 @@ using NToastNotify;
 using TeaManagement.Dtos;
 using TeaManagement.Interface;
 using TeaManagement.Providers;
+using TeaManagement.Repository.Interface;
 using TeaManagement.ViewModels;
 
 namespace TeaManagement.Controllers;
@@ -15,14 +16,16 @@ public class ProductController : Controller
     private readonly ApplicationDbContext _context;
     private readonly IToastNotification _toastNotification;
     private readonly DropdownProvider _dropdownProvider;
+    private readonly IReportRepository _reportRepository;
 
     public ProductController(IProductService productService, ApplicationDbContext context,
-        IToastNotification toastNotification, DropdownProvider dropdownProvider)
+        IToastNotification toastNotification, DropdownProvider dropdownProvider, IReportRepository reportRepository)
     {
         _productService = productService;
         _context = context;
         _toastNotification = toastNotification;
         _dropdownProvider = dropdownProvider;
+        _reportRepository = reportRepository;
     }
 
 
@@ -70,4 +73,9 @@ public class ProductController : Controller
         }
     }
 
+    public async Task<IActionResult> ProductReport()
+    {
+        var report = await _reportRepository.GetProductReportAsync(null);
+        return View(report);
+    }
 }

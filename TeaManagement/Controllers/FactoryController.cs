@@ -7,6 +7,7 @@ using NToastNotify;
 using TeaManagement.Dtos;
 using TeaManagement.Interface;
 using TeaManagement.Manager;
+using TeaManagement.Repository.Interface;
 using TeaManagement.ViewModels;
 
 namespace TeaManagement.Controllers;
@@ -17,15 +18,18 @@ public class FactoryController : Controller
     private readonly ApplicationDbContext _context;
     private readonly IToastNotification _toastNotification;
     private readonly IFactoryService _factoryService;
+    private readonly IReportRepository _reportRepository;
 
 
-    public FactoryController(FactoryManager factoryManager, ApplicationDbContext context, IToastNotification toastNotification,
-        IFactoryService factoryService)
+    public FactoryController(FactoryManager factoryManager, ApplicationDbContext context,
+        IToastNotification toastNotification,
+        IFactoryService factoryService, IReportRepository reportRepository)
     {
         _factoryManager = factoryManager;
         _context = context;
         _toastNotification = toastNotification;
         _factoryService = factoryService;
+        _reportRepository = reportRepository;
     }
 
     public IActionResult NewFactory()
@@ -85,21 +89,7 @@ public class FactoryController : Controller
     [HttpGet]
     public async Task<IActionResult> FactoryReport()
     {
-        var report = await _context.Factories.ToListAsync();
+        var report = await _reportRepository.GetFactoryReportAsync(null);
         return View(report);
-    }
-
-    [HttpGet]
-    public JsonResult GetFactories()
-    {
-        var factories = _context.Factories
-            .Select(f => new
-            {
-                id = f.Id,
-                name = f.Name
-            })
-            .ToList();
-
-        return Json(factories);
     }
 }

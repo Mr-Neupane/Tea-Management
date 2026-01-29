@@ -8,6 +8,8 @@ using TeaManagement.Data;
 using TeaManagement.Interface;
 using TeaManagement.Manager;
 using TeaManagement.Providers;
+using TeaManagement.Repository;
+using TeaManagement.Repository.Interface;
 using TeaManagement.Services;
 
 
@@ -23,6 +25,7 @@ builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<ILedgerService, LedgerService>();
 builder.Services.AddScoped<IStakeholderService, StakeholderService>();
 builder.Services.AddScoped<IReceivableService, ReceivableService>();
+builder.Services.AddScoped<IReportRepository, ReportRepository>();
 builder.Services.AddScoped<DropdownProvider>();
 builder.Services.AddScoped<FactoryManager>();
 builder.Services.AddScoped<BonusManager>();
