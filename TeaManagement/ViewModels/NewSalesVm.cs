@@ -8,4 +8,5 @@ public class NewSalesVm
     public decimal Price { get; set; }
     public decimal WaterQuantity { get; set; }
     public int FactoryId { get; set; }
+    public string BillNo { get; set; }
 }

@@ -31,6 +31,7 @@ public class SalesTransactionManager
                 ProductId = dto.ProductId,
                 Quantity = dto.Quantity,
                 Price = dto.Price,
+                BillNo = dto.BillNo,
                 WaterQuantity = dto.WaterQuantity,
                 SalesAmount = dto.SalesAmount,
                 FactoryId = dto.FactoryId,

@@ -37,6 +37,7 @@ public class SaleController : Controller
                 TxnDate = vm.TxnDate,
                 Quantity = vm.Quantity,
                 Price = vm.Price,
+                BillNo = vm.BillNo,
                 WaterQuantity = vm.WaterQuantity,
                 SalesAmount = Math.Round((vm.Quantity - vm.WaterQuantity) * vm.Price, 2),
                 FactoryId = vm.FactoryId

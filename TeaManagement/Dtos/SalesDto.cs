@@ -9,4 +9,5 @@ public class SalesDto
     public decimal WaterQuantity { get; set; } = 0;
     public decimal SalesAmount { get; set; } = 0;
     public int FactoryId { get; set; }
+    public string BillNo { get; set; }
 }
