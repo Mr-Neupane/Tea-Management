@@ -18,7 +18,9 @@ public class ProductService : IProductService
         var product = new Product
         {
             Name = dto.Name,
+            CategoryId = dto.CategoryId,
             Description = dto.Description,
+            UnitId = dto.UnitId,
             Price = dto.Price,
         };
         await _context.Products.AddAsync(product);

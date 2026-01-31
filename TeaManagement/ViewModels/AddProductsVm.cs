@@ -6,8 +6,11 @@ public class AddProductsVm
 {
     public string ProductName { get; set; }
     public int CategoryId { get; set; }
+    public int UnitId { get; set; }
     public string? ProductDescription { get; set; }
     public decimal ProductPrice { get; set; }
 
     public SelectList Categories { get; set; }
+    public SelectList Units { get; set; }
+    
 }

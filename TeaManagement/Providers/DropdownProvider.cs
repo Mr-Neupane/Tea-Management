@@ -70,4 +70,26 @@ public class DropdownProvider
         };
         return statusList;
     }
+
+    public List<DropdownListDto> GetUnitList()
+    {
+        var units = _context.ProductUnits.Where(x => x.Status == (int)Status.Active).Select(u =>
+            new DropdownListDto()
+            {
+                Id = u.Id,
+                Name = u.UnitName
+            }).ToList();
+        return units;
+    }
+
+    public List<DropdownListDto> GetSupplierList()
+    {
+        var suppliers = _context.Stakeholders.Where(x => x.StakeholderType == (int)StakeholderType.Supplier).Select(x =>
+            new DropdownListDto()
+            {
+                Id = x.Id,
+                Name = x.FullName
+            }).ToList();
+        return suppliers;
+    }
 }

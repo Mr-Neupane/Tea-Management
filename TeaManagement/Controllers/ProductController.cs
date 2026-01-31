@@ -32,9 +32,11 @@ public class ProductController : Controller
     public IActionResult AddProducts()
     {
         var products = _dropdownProvider.GetAllProductCategory();
+        var units = _dropdownProvider.GetUnitList();
         var vm = new AddProductsVm
         {
-            Categories = new SelectList(products, "Id", "Name")
+            Categories = new SelectList(products, "Id", "Name"),
+            Units = new SelectList(units, "Id", "Name"),
         };
         return View(vm);
     }
@@ -48,7 +50,7 @@ public class ProductController : Controller
                 .Where(p => p.Name.Trim().ToLower() == vm.ProductName.Trim().ToLower()).FirstOrDefaultAsync();
             if (existingPros != null)
             {
-                _toastNotification.AddAlertToastMessage($" {vm.ProductName} already exists");
+                _toastNotification.AddErrorToastMessage($" {vm.ProductName} already exists");
                 return View(vm);
             }
             else
@@ -56,6 +58,8 @@ public class ProductController : Controller
                 var dto = new ProductDto
                 {
                     Name = vm.ProductName,
+                    UnitId = vm.UnitId,
+                    CategoryId = vm.CategoryId,
                     Description = vm.ProductDescription,
                     Price = vm.ProductPrice,
                 };
@@ -64,12 +68,24 @@ public class ProductController : Controller
             }
 
 
-            return View();
+            return RedirectToAction("AddProducts");
         }
         catch (Exception e)
         {
-            _toastNotification.AddAlertToastMessage("Error adding product." + e.Message);
-            return View();
+            var units = _dropdownProvider.GetUnitList();
+            var categories = _dropdownProvider.GetAllProductCategory();
+            var newVm = new AddProductsVm
+            {
+                ProductName = vm.ProductName,
+                CategoryId = vm.CategoryId,
+                UnitId = vm.UnitId,
+                ProductDescription = vm.ProductDescription,
+                ProductPrice = vm.ProductPrice,
+                Categories = new SelectList(categories, "Id", "Name"),
+                Units = new SelectList(units, "Id", "Name"),
+            };
+            _toastNotification.AddErrorToastMessage("Error adding product." + e.Message);
+            return View(newVm);
         }
     }
 
