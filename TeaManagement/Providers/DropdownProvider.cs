@@ -22,6 +22,19 @@ public class DropdownProvider
         return factories;
     }
 
+    public List<DropdownListDto> GetParentLedgers()
+    {
+        var parentLedgers = (from l in _context.Ledgers
+            join c in _context.ChartOfAccounts on l.ParentId equals c.Id
+            where l.Status == (int)Status.Active
+            select new DropdownListDto()
+            {
+                Id = l.Id,
+                Name = string.Concat(l.Name," [",l.Code,']')
+            }).ToList();
+        return parentLedgers;
+    }
+
     public List<DropdownListDto> GetAllBonusLedgers()
     {
         var ledgers = _context.Ledgers.Where(x => x.SubParentId == -3).Select(x => new DropdownListDto()

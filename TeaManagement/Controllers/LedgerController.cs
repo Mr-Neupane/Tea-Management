@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using NToastNotify;
 using TeaManagement.Dtos;
 using TeaManagement.Interface;
+using TeaManagement.Providers;
 using TeaManagement.ViewModels;
 
 namespace TeaManagement.Controllers;
@@ -11,12 +13,15 @@ public class LedgerController : Controller
     private readonly ApplicationDbContext _context;
     private readonly ILedgerService _ledgerService;
     private readonly IToastNotification _toastNotification;
+    private readonly DropdownProvider _dropdownProvider;
 
-    public LedgerController(ApplicationDbContext context, ILedgerService ledgerService, IToastNotification toastNotification)
+    public LedgerController(ApplicationDbContext context, ILedgerService ledgerService,
+        IToastNotification toastNotification, DropdownProvider dropdownProvider)
     {
         _context = context;
         _ledgerService = ledgerService;
         _toastNotification = toastNotification;
+        _dropdownProvider = dropdownProvider;
     }
 
     [HttpGet]
@@ -39,6 +44,18 @@ public class LedgerController : Controller
         return View();
     }
 
+    [HttpGet]
+    public IActionResult CreateLedger()
+    {
+        var parentLedger = _dropdownProvider.GetParentLedgers();
+        var vm = new AddLegderVm
+        {
+            SubParentIds = new SelectList(parentLedger, "Id", "Name")
+        };
+        return View(vm);
+    }
+
+    [HttpPost]
     public async Task<IActionResult> CreateLedger(AddLegderVm vm)
     {
         var existingLedger = _context.Ledgers.Select(x => x.Name == vm.LedgerName.Trim()).FirstOrDefault();
