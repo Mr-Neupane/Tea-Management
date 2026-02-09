@@ -43,4 +43,21 @@ public class ReportRepository : IReportRepository
             }).ToListAsync();
         return factories;
     }
+
+    public async Task<List<LedgerReportDto>> LedgerReportAsync()
+    {
+        var res = await (from l in _context.Ledgers
+                join pl in _context.Ledgers on l.SubParentId equals pl.Id
+                join c in _context.ChartOfAccounts on pl.ParentId equals c.Id
+                select new LedgerReportDto
+                {
+                    LedgerName = l.Name,
+                    SubParentLedger = pl.Name,
+                    CoaLegderName = c.Name,
+                    LedgerCode = l.Code,
+                    LedgerStatus = l.Status
+                }
+            ).ToListAsync();
+        return res;
+    }
 }
