@@ -22,6 +22,19 @@ public class DropdownProvider
         return factories;
     }
 
+    public List<DropdownListDto> GetParentLedgers()
+    {
+        var parentLedgers = (from l in _context.Ledgers
+            join c in _context.ChartOfAccounts on l.ParentId equals c.Id
+            where l.Status == (int)Status.Active
+            select new DropdownListDto()
+            {
+                Id = l.Id,
+                Name = string.Concat(l.Name," [",l.Code,']')
+            }).ToList();
+        return parentLedgers;
+    }
+
     public List<DropdownListDto> GetAllBonusLedgers()
     {
         var ledgers = _context.Ledgers.Where(x => x.SubParentId == -3).Select(x => new DropdownListDto()
@@ -69,5 +82,27 @@ public class DropdownProvider
             }
         };
         return statusList;
+    }
+
+    public List<DropdownListDto> GetUnitList()
+    {
+        var units = _context.ProductUnits.Where(x => x.Status == (int)Status.Active).Select(u =>
+            new DropdownListDto()
+            {
+                Id = u.Id,
+                Name = u.UnitName
+            }).ToList();
+        return units;
+    }
+
+    public List<DropdownListDto> GetSupplierList()
+    {
+        var suppliers = _context.Stakeholders.Where(x => x.StakeholderType == (int)StakeholderType.Supplier).Select(x =>
+            new DropdownListDto()
+            {
+                Id = x.Id,
+                Name = x.FullName
+            }).ToList();
+        return suppliers;
     }
 }

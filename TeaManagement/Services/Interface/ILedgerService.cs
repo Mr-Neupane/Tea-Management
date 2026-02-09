@@ -8,6 +8,6 @@ namespace TeaManagement.Interface;
 public interface ILedgerService
 {
     public Task<Ledger> AddLedgerAsync(NewLedgerDto dto);
-    public Task<List<LedgerReportDto>> LedgerReportAsync();
+    
 }
 

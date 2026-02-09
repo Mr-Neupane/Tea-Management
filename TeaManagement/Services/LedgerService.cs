@@ -30,26 +30,9 @@ public class LedgerService : ILedgerService
         return ledger;
     }
 
-    public async Task<List<LedgerReportDto>> LedgerReportAsync()
-    {
-        var res = await (from l in _context.Ledgers
-                join pl in _context.Ledgers on l.SubParentId equals pl.Id
-                join c in _context.ChartOfAccounts on pl.ParentId equals c.Id
-                select new LedgerReportDto
-                {
-                    LedgerName = l.Name,
-                    SubParentLedger = pl.Name,
-                    CoaLegderName = c.Name,
-                    LedgerCode = l.Code,
-                    LedgerStatus = l.Status
-                }
-            ).ToListAsync();
-        return res;
-    }
-
     private string GetLedgerCode(int? subParentId)
     {
-        var parentId =  _context.Ledgers.Where(x => x.Id == subParentId).Select(x => x.Code).Single();
+        var parentId = _context.Ledgers.Where(x => x.Id == subParentId).Select(x => x.Code).Single();
         var countChild = _context.Ledgers.Count(x => x.SubParentId == subParentId) + 1;
         var ledgerCode = string.Concat(parentId, '.', countChild);
         return ledgerCode;

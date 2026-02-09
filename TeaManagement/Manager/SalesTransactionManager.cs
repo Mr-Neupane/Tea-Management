@@ -29,7 +29,7 @@ public class SalesTransactionManager
             var salesDto = new SalesDto
             {
                 ProductId = dto.ProductId,
-                Quantity = dto.Quantity,
+                Quantity = Math.Round(dto.Quantity, 2),
                 Price = dto.Price,
                 BillNo = dto.BillNo,
                 WaterQuantity = dto.WaterQuantity,
