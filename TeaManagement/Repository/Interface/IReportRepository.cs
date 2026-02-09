@@ -6,4 +6,5 @@ public interface IReportRepository
 {
     public Task<List<ProductReportDto>> GetProductReportAsync(int? status);
     public Task<List<FactoryReportDto>> GetFactoryReportAsync(int? status);
+    public Task<List<LedgerReportDto>> LedgerReportAsync();
 }

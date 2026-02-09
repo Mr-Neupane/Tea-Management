@@ -4,6 +4,7 @@ using NToastNotify;
 using TeaManagement.Dtos;
 using TeaManagement.Interface;
 using TeaManagement.Providers;
+using TeaManagement.Repository.Interface;
 using TeaManagement.ViewModels;
 
 namespace TeaManagement.Controllers;
@@ -13,15 +14,17 @@ public class LedgerController : Controller
     private readonly ApplicationDbContext _context;
     private readonly ILedgerService _ledgerService;
     private readonly IToastNotification _toastNotification;
+    private readonly IReportRepository _reportRepository;
     private readonly DropdownProvider _dropdownProvider;
 
     public LedgerController(ApplicationDbContext context, ILedgerService ledgerService,
-        IToastNotification toastNotification, DropdownProvider dropdownProvider)
+        IToastNotification toastNotification, DropdownProvider dropdownProvider, IReportRepository reportRepository)
     {
         _context = context;
         _ledgerService = ledgerService;
         _toastNotification = toastNotification;
         _dropdownProvider = dropdownProvider;
+        _reportRepository = reportRepository;
     }
 
     [HttpGet]
@@ -82,7 +85,7 @@ public class LedgerController : Controller
 
     public async Task<IActionResult> LedgerReport()
     {
-        var res = await _ledgerService.LedgerReportAsync();
+        var res = await _reportRepository.LedgerReportAsync();
 
         return View(res);
     }

@@ -15,7 +15,7 @@ public class IdProvider
     {
         var facLedgerId = await _context.Factories.Where(x => x.Id == factoryId).Select(x => x.LedgerId)
             .SingleOrDefaultAsync();
-        if (facLedgerId == null)
+        if (facLedgerId == 0)
         {
             throw new Exception("Factory not found");
         }
