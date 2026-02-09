@@ -1,0 +1,56 @@
+﻿@using TeaManagement.Entities
+@model TeaManagement.ViewModels.PurchaseVm
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <form method="post" asp-action="AddPurchase">
+            <table class="table table-bordered table-striped">
+                <thead>
+                <tr>
+                    <th width="50px">SN</th>
+                    <th>Product Name</th>
+                    <th width="100px">Unit</th>
+                    <th width="100px">Rate</th>
+                    <th width="100px">Quantity</th>
+                    <th width="100px">Amount</th>
+                </tr>
+                </thead>
+                <tbody>
+                @for (int i = 0; i <= 10; i++)
+                {
+                    <tr>
+                        <td>@(i+1)</td>
+                        <td>
+                            <select asp-for="Purchase[i].ProductId" class="form-select form-select-sm product-select">Select
+                                <option value="">Select Product</option>
+                                @if (Model.ProductList != null)
+                                {
+                                    @foreach (var p in Model.ProductList)
+                                    {
+                                        <option value="@p.Value">@p.Text</option>
+                                    }
+                                }
+                            </select>
+                        </td>
+                        <td>
+                            <input type="text" name="Unit[@i]" class="form-control"/>
+                        </td>
+                        <td>
+                            <input type="number" step="0.01" name="Rate[@i]" class="form-control"/>
+                        </td>
+                        <td>
+                            <input type="number" name="Quantity[@i]" class="form-control"/>
+                        </td>
+                        <td>
+                            <input readonly="readonly" type="number" step="0.01" name="Amount[@i]"
+                                   class="form-control "/>
+                        </td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+</div>
