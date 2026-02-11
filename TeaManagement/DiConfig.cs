@@ -49,6 +49,7 @@ public static class DiConfig
         builder.Services.AddScoped<FactoryManager>();
         builder.Services.AddScoped<BonusManager>();
         builder.Services.AddScoped<SalesTransactionManager>();
+        builder.Services.AddScoped<StakeholderManager>();
     }
 
     private static void UseNotificationService(this WebApplicationBuilder builder)

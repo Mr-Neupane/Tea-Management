@@ -49,15 +49,6 @@ public class FactoryController : Controller
         {
             try
             {
-                var ledger = new NewLedgerDto
-                {
-                    LedgerName = vm.FactoryName.Trim(),
-                    LedgerCode = null,
-                    SubParentId = -8,
-                    ParentId = null
-                };
-
-
                 var factory = new NewFactoryDto
                 {
                     Name = vm.FactoryName,
@@ -66,7 +57,7 @@ public class FactoryController : Controller
                     Country = vm.FactoryCountry,
                     LedgerId = 0
                 };
-                await _factoryManager.AddNewFactory(factory, ledger);
+                await _factoryManager.AddNewFactory(factory);
                 _toastNotification.AddSuccessToastMessage($"{vm.FactoryName} factory created successfully");
                 return View();
             }

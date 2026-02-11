@@ -14,18 +14,18 @@
                 <div class="card-body">
                     <form method="post" asp-action="NewFactory">
                         <div class="mb-3">
-                            <label asp-for="FactoryName">Factory Name</label>
-                            <input asp-for="FactoryName" class="form-control" placeholder="Enter factory name"/>
+                            <label asp-for="FactoryName">Factory Name <span class="text-danger">*</span></label>
+                            <input asp-for="FactoryName" autocomplete="off" required="required" class="form-control" placeholder="Enter factory name"/>
                         </div>
 
                         <div class="mb-3">
-                            <label asp-for="FactoryContact">Contact Number</label>
-                            <input asp-for="FactoryContact" class="form-control" placeholder="Enter contact number"/>
+                            <label asp-for="FactoryContact">Contact Number <span class="text-danger">*</span></label>
+                            <input asp-for="FactoryContact" type="number" required="required" autocomplete="off" class="form-control" placeholder="Enter contact number"/>
                         </div>
 
                         <div class="mb-3">
-                            <label asp-for="FactoryAddress">Address</label>
-                            <input asp-for="FactoryAddress" class="form-control" placeholder="Enter location"/>
+                            <label asp-for="FactoryAddress">Address <span class="text-danger">*</span></label>
+                            <input asp-for="FactoryAddress" autocomplete="off" required="required" class="form-control" placeholder="Enter location"/>
                         </div>
 
                         <div class="mb-3">
@@ -38,7 +38,7 @@
                         </div>
 
                         <div>
-                            <button type="submit" class="btn btn-primary ">Save</button>
+                            <button type="submit" onclick="return confirm('Do you want to add factory?')" class="btn btn-primary ">Save</button>
                             <button asp-action="NewFactory" formmethod="get" class="btn btn-danger">Reset</button>
                         </div>
                     </form>
