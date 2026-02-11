@@ -747,6 +747,11 @@ namespace TeaManagement.Migrations
                         .HasColumnType("character(1)")
                         .HasColumnName("rec_status");
 
+                    b.Property<string>("StakeholderCode")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("stakeholder_code");
+
                     b.Property<int>("StakeholderType")
                         .HasColumnType("integer")
                         .HasColumnName("stakeholder_type");

@@ -11,8 +11,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace TeaManagement.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260128045735_initial")]
-    partial class initial
+    [Migration("20260211112459_Initial Migrations")]
+    partial class InitialMigrations
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -458,6 +458,133 @@ namespace TeaManagement.Migrations
                     b.ToTable("unit", "inventory");
                 });
 
+            modelBuilder.Entity("TeaManagement.Entities.Purchase", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("BillNo")
+                        .HasColumnType("text")
+                        .HasColumnName("bill_no");
+
+                    b.Property<decimal>("Discount")
+                        .HasColumnType("numeric")
+                        .HasColumnName("discount");
+
+                    b.Property<decimal>("GrossAmount")
+                        .HasColumnType("numeric")
+                        .HasColumnName("gross_amount");
+
+                    b.Property<decimal>("NetAmount")
+                        .HasColumnType("numeric")
+                        .HasColumnName("net_amount");
+
+                    b.Property<string>("PurchaseNo")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("purchase_no");
+
+                    b.Property<int>("RecById")
+                        .HasColumnType("integer")
+                        .HasColumnName("rec_by_id");
+
+                    b.Property<DateTime>("RecDate")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("rec_date");
+
+                    b.Property<char>("RecStatus")
+                        .HasColumnType("character(1)")
+                        .HasColumnName("rec_status");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("integer")
+                        .HasColumnName("status");
+
+                    b.Property<int>("SupplierId")
+                        .HasColumnType("integer")
+                        .HasColumnName("supplier_id");
+
+                    b.Property<DateTime>("TxnDate")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("txn_date");
+
+                    b.HasKey("Id")
+                        .HasName("pk_purchase");
+
+                    b.HasIndex("SupplierId")
+                        .HasDatabaseName("ix_purchase_supplier_id");
+
+                    b.ToTable("purchase", "inventory");
+                });
+
+            modelBuilder.Entity("TeaManagement.Entities.PurchaseDetails", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<decimal>("Discount")
+                        .HasColumnType("numeric")
+                        .HasColumnName("discount");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("integer")
+                        .HasColumnName("product_id");
+
+                    b.Property<int>("PurchaseId")
+                        .HasColumnType("integer")
+                        .HasColumnName("purchase_id");
+
+                    b.Property<decimal>("Quantity")
+                        .HasColumnType("numeric")
+                        .HasColumnName("quantity");
+
+                    b.Property<decimal>("Rate")
+                        .HasColumnType("numeric")
+                        .HasColumnName("rate");
+
+                    b.Property<int>("RecById")
+                        .HasColumnType("integer")
+                        .HasColumnName("rec_by_id");
+
+                    b.Property<DateTime>("RecDate")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("rec_date");
+
+                    b.Property<char>("RecStatus")
+                        .HasColumnType("character(1)")
+                        .HasColumnName("rec_status");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("integer")
+                        .HasColumnName("status");
+
+                    b.Property<int>("UnitId")
+                        .HasColumnType("integer")
+                        .HasColumnName("unit_id");
+
+                    b.HasKey("Id")
+                        .HasName("pk_purchase_details");
+
+                    b.HasIndex("ProductId")
+                        .HasDatabaseName("ix_purchase_details_product_id");
+
+                    b.HasIndex("PurchaseId")
+                        .HasDatabaseName("ix_purchase_details_purchase_id");
+
+                    b.HasIndex("UnitId")
+                        .HasDatabaseName("ix_purchase_details_unit_id");
+
+                    b.ToTable("purchase_details", "inventory");
+                });
+
             modelBuilder.Entity("TeaManagement.Entities.Receivable", b =>
                 {
                     b.Property<int>("Id")
@@ -520,6 +647,10 @@ namespace TeaManagement.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("BillNo")
+                        .HasColumnType("text")
+                        .HasColumnName("bill_no");
+
                     b.Property<int>("FactoryId")
                         .HasColumnType("integer")
                         .HasColumnName("factory_id");
@@ -551,6 +682,11 @@ namespace TeaManagement.Migrations
                     b.Property<char>("RecStatus")
                         .HasColumnType("character(1)")
                         .HasColumnName("rec_status");
+
+                    b.Property<string>("SaleNo")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("sale_no");
 
                     b.Property<int>("Status")
                         .HasColumnType("integer")
@@ -613,6 +749,11 @@ namespace TeaManagement.Migrations
                     b.Property<char>("RecStatus")
                         .HasColumnType("character(1)")
                         .HasColumnName("rec_status");
+
+                    b.Property<string>("StakeholderCode")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("stakeholder_code");
 
                     b.Property<int>("StakeholderType")
                         .HasColumnType("integer")
@@ -733,6 +874,48 @@ namespace TeaManagement.Migrations
                     b.Navigation("Unit");
                 });
 
+            modelBuilder.Entity("TeaManagement.Entities.Purchase", b =>
+                {
+                    b.HasOne("TeaManagement.Entities.Stakeholder", "Supplier")
+                        .WithMany()
+                        .HasForeignKey("SupplierId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_purchase_stakeholders_supplier_id");
+
+                    b.Navigation("Supplier");
+                });
+
+            modelBuilder.Entity("TeaManagement.Entities.PurchaseDetails", b =>
+                {
+                    b.HasOne("TeaManagement.Entities.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_purchase_details_product_product_id");
+
+                    b.HasOne("TeaManagement.Entities.Purchase", "Purchase")
+                        .WithMany("PurchaseDetails")
+                        .HasForeignKey("PurchaseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_purchase_details_purchase_purchase_id");
+
+                    b.HasOne("TeaManagement.Entities.ProductUnit", "Unit")
+                        .WithMany()
+                        .HasForeignKey("UnitId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_purchase_details_unit_unit_id");
+
+                    b.Navigation("Product");
+
+                    b.Navigation("Purchase");
+
+                    b.Navigation("Unit");
+                });
+
             modelBuilder.Entity("TeaManagement.Entities.Receivable", b =>
                 {
                     b.HasOne("TeaManagement.Entities.Stakeholder", "Stakeholder")
@@ -811,6 +994,11 @@ namespace TeaManagement.Migrations
             modelBuilder.Entity("TeaManagement.Entities.AccountingTransaction", b =>
                 {
                     b.Navigation("Details");
+                });
+
+            modelBuilder.Entity("TeaManagement.Entities.Purchase", b =>
+                {
+                    b.Navigation("PurchaseDetails");
                 });
 #pragma warning restore 612, 618
         }
