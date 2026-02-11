@@ -1,9 +1,10 @@
-﻿using TeaManagement.Dtos;
+﻿using Microsoft.AspNetCore.Mvc;
+using TeaManagement.Dtos;
 using TeaManagement.Enums;
 
 namespace TeaManagement.Providers;
 
-public class DropdownProvider
+public class DropdownProvider :Controller
 {
     private readonly ApplicationDbContext _context;
 
@@ -30,7 +31,7 @@ public class DropdownProvider
             select new DropdownListDto()
             {
                 Id = l.Id,
-                Name = string.Concat(l.Name," [",l.Code,']')
+                Name = string.Concat(l.Name, " [", l.Code, ']')
             }).ToList();
         return parentLedgers;
     }
@@ -104,5 +105,17 @@ public class DropdownProvider
                 Name = x.FullName
             }).ToList();
         return suppliers;
+    }
+
+    [HttpGet]
+    public JsonResult GetProductUnit(int productId)
+    {
+        // Example: fetch from DB
+        var product = _context.Products
+            .Where(p => p.Id == productId)
+            .Select(p => new { p.Unit.UnitName,p.Price,p.UnitId })
+            .FirstOrDefault();
+
+        return new JsonResult(product);
     }
 }
