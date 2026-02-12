@@ -7,6 +7,7 @@ using TeaManagement.Providers;
 using TeaManagement.Repository;
 using TeaManagement.Repository.Interface;
 using TeaManagement.Services;
+using TeaManagement.Services.Interface;
 
 namespace TeaManagement;
 
@@ -28,6 +29,7 @@ public static class DiConfig
         builder.Services.AddScoped<IStakeholderService, StakeholderService>();
         builder.Services.AddScoped<IReceivableService, ReceivableService>();
         builder.Services.AddScoped<IPurchaseService, PurchaseService>();
+        builder.Services.AddScoped<IPayableService, PayableService>();
 
         builder.UseManagers();
         builder.UseRepository();

@@ -17,7 +17,7 @@ public class ApplicationDbContext : DbContext
     public DbSet<CoaLedger> ChartOfAccounts { get; set; }
     public DbSet<Ledger> Ledgers { get; set; }
     public DbSet<Receivable> Receivable { get; set; }
-    public DbSet<Payable> Payable { get; set; }
+    public DbSet<Payable> Payables { get; set; }
     public DbSet<Stakeholder> Stakeholders { get; set; }
     public DbSet<ProductUnit> ProductUnits { get; set; }
     public DbSet<AccountingTransaction> AccTransaction { get; set; }

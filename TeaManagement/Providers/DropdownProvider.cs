@@ -4,7 +4,7 @@ using TeaManagement.Enums;
 
 namespace TeaManagement.Providers;
 
-public class DropdownProvider :Controller
+public class DropdownProvider : Controller
 {
     private readonly ApplicationDbContext _context;
 
@@ -56,13 +56,26 @@ public class DropdownProvider :Controller
         return cat;
     }
 
-    public List<DropdownListDto> GetAllProducts()
+    public List<DropdownListDto> GetProductsForPurchase()
     {
-        var prod = _context.Products.Where(x => x.Status == (int)Status.Active).Select(x => new DropdownListDto
-            {
-                Id = x.Id,
-                Name = x.Name
-            })
+        var prod = _context.Products.Where(x => x.Status == (int)Status.Active && x.CategoryId != -1).Select(x =>
+                new DropdownListDto
+                {
+                    Id = x.Id,
+                    Name = x.Name
+                })
+            .ToList();
+        return prod;
+    }
+
+    public List<DropdownListDto> GetProductsForSales()
+    {
+        var prod = _context.Products.Where(x => x.Status == (int)Status.Active && x.CategoryId == -1).Select(x =>
+                new DropdownListDto
+                {
+                    Id = x.Id,
+                    Name = x.Name
+                })
             .ToList();
         return prod;
     }
@@ -113,7 +126,7 @@ public class DropdownProvider :Controller
         // Example: fetch from DB
         var product = _context.Products
             .Where(p => p.Id == productId)
-            .Select(p => new { p.Unit.UnitName,p.Price,p.UnitId })
+            .Select(p => new { p.Unit.UnitName, p.Price, p.UnitId })
             .FirstOrDefault();
 
         return new JsonResult(product);

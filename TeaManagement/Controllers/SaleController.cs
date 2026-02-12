@@ -28,7 +28,7 @@ public class SaleController : Controller
 
     public IActionResult NewSale()
     {
-        var prod = _dropdownProvider.GetAllProducts();
+        var prod = _dropdownProvider.GetProductsForSales();
         var fac = _dropdownProvider.GetAllFactories();
         var vm = new NewSalesVm
         {
