@@ -50,13 +50,13 @@ public class StakeholderController : Controller
                 Address = vm.Address,
             };
             await _stakeholderManager.RecordStakeholder(dto);
+            _toastNotification.AddSuccessToastMessage("Supplier added successfully.");
+            return View();
         }
         catch (Exception e)
         {
             _toastNotification.AddErrorToastMessage(e.Message);
             return View(vm);
         }
-
-        return View();
     }
 }
