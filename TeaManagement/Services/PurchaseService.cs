@@ -1,27 +1,48 @@
-﻿using TeaManagement.Entities;
+﻿using TeaManagement.Dtos;
+using TeaManagement.Entities;
 using TeaManagement.Interface;
 
 namespace TeaManagement.Services;
 
-public class PurchaseService :IPurchaseService
+public class PurchaseService : IPurchaseService
 {
-    public Task<Purchase> AddPurchaseAsync(Purchase dto)
-    {
-       
+    private readonly ApplicationDbContext _context;
 
+    public PurchaseService(ApplicationDbContext context)
+    {
+        _context = context;
+    }
+
+    public async Task<Purchase> AddPurchaseAsync(PurchaseDto dto)
+    {
+        var number = GetPurchaseNumber();
         var purchase = new Purchase
         {
-            
-            SupplierId = 0,
-            PurchaseNo = null,
-            BillNo = null,
-            GrossAmount = 0,
-            Discount = 0,
-            NetAmount = 0,
-            TxnDate = default,
-            PurchaseDetails = null
+            SupplierId = dto.SupplierId,
+            PurchaseNo = number,
+            BillNo = dto.BillNo,
+            GrossAmount = dto.GrossAmount,
+            Discount = dto.Discount,
+            NetAmount = dto.NetAmount,
+            TxnDate = dto.TxnDate.ToUniversalTime(),
+            PurchaseDetails = dto.Details.Select(x => new PurchaseDetails
+            {
+                ProductId = x.ProductId,
+                UnitId = x.UnitId,
+                Quantity = x.Quantity,
+                Rate = x.Rate,
+                Discount = x.Discount,
+            }).ToList()
         };
-        
-        throw new NotImplementedException();
+        await _context.Purchases.AddAsync(purchase);
+        await _context.SaveChangesAsync();
+        return purchase;
+    }
+
+    private string GetPurchaseNumber()
+    {
+        const string prefix = "PR00000";
+        var cn = _context.Purchases.Count() + 1;
+        return string.Concat(prefix, cn);
     }
 }

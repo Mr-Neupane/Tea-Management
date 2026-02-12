@@ -20,7 +20,7 @@ public class AccountingTransactionService : IAccountingTransactionService
         var voucherNo = GetVoucherNo(dto.IsJv);
         var txn = new AccountingTransaction
         {
-            TransactionDate = dto.TxnDate,
+            TransactionDate = dto.TxnDate.ToUniversalTime(),
             Type = dto.TxnType,
             Amount = dto.Amount,
             VoucherTypeId = dto.IsJv ? (int)VoucherType.Journal : (int)VoucherType.Automatic,

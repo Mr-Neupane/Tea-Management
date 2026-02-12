@@ -2,6 +2,7 @@
 using NToastNotify;
 using TeaManagement.Interface;
 using TeaManagement.Manager;
+using TeaManagement.Manager.Interface;
 using TeaManagement.Providers;
 using TeaManagement.Repository;
 using TeaManagement.Repository.Interface;
@@ -26,6 +27,7 @@ public static class DiConfig
         builder.Services.AddScoped<ILedgerService, LedgerService>();
         builder.Services.AddScoped<IStakeholderService, StakeholderService>();
         builder.Services.AddScoped<IReceivableService, ReceivableService>();
+        builder.Services.AddScoped<IPurchaseService, PurchaseService>();
 
         builder.UseManagers();
         builder.UseRepository();
@@ -50,6 +52,7 @@ public static class DiConfig
         builder.Services.AddScoped<BonusManager>();
         builder.Services.AddScoped<SalesTransactionManager>();
         builder.Services.AddScoped<StakeholderManager>();
+        builder.Services.AddScoped<IPurchaseManager, PurchaseManager>();
     }
 
     private static void UseNotificationService(this WebApplicationBuilder builder)

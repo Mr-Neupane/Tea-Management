@@ -1,4 +1,5 @@
 ﻿using System.Transactions;
+using TeaManagement.Constraints;
 using TeaManagement.Dtos;
 using TeaManagement.Entities;
 using TeaManagement.Enums;
@@ -25,7 +26,7 @@ public class StakeholderManager
             {
                 LedgerName = sDto.FullName,
                 LedgerCode = null,
-                SubParentId = sDto.IsSupplier ? (int)ParentLedger.Creditors : (int)ParentLedger.Debtors,
+                SubParentId = sDto.IsSupplier ? ParentLedgerIdConstraints.Creditors : ParentLedgerIdConstraints.Debtors,
                 ParentId = null,
                 IsParent = false
             };
