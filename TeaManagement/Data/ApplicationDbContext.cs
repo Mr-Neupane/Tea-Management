@@ -22,6 +22,8 @@ public class ApplicationDbContext : DbContext
     public DbSet<ProductUnit> ProductUnits { get; set; }
     public DbSet<AccountingTransaction> AccTransaction { get; set; }
     public DbSet<TransactionDetails> AccTransactionDetails { get; set; }
+    public DbSet<Purchase> Purchases { get; set; }
+
 
     protected override void OnConfiguring(DbContextOptionsBuilder options)
     {

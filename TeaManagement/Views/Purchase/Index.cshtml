@@ -1,0 +1,184 @@
+﻿@model TeaManagement.ViewModels.PurchaseVm
+
+@{
+    ViewData["Title"] = "Add Purchase";
+}
+
+<form method="post" asp-action="AddPurchase">
+    <div class="container mt-4">
+        <div class="card shadow border-0">
+            <div class="card-header ">
+                <h6 class="mb-3 fw-semibold">Additional Purchase Details</h6>
+            </div>
+            <div class="card-body">
+                <div class="row g-3">
+
+                    <div class="col-md-4 w-auto">
+                        <label class="form-label ">Date</label>
+                        <input class="form-control " type="text"/>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label class="form-label">Supplier <span class="text-danger">*</span></label>
+                        <select asp-for="StakeholderId"
+                                asp-items="Model.SupplierList"
+                                class="form-control" required="required">
+                            <option value="">Select Supplier</option>
+                        </select>
+
+
+                    </div>
+
+                    <div class="col-md-4 w-auto">
+                        <label class="form-label">Bill No</label>
+                        <input type="text" class="form-control"/>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container mt-5">
+        <div class="card shadow row justify-content-center">
+
+            <table class="table table-bordered table-striped">
+                <thead>
+                <tr>
+                    <th width="50px">SN</th>
+                    <th>Product Name</th>
+                    <th width="125px">Unit</th>
+                    <th width="100px">Rate</th>
+                    <th width="100px">Quantity</th>
+                    <th width="100px">Amount</th>
+                </tr>
+                </thead>
+                <tbody>
+                @for (int i = 0; i <= 8; i++)
+                {
+                    <tr>
+                        <td>@(i + 1)</td>
+                        <td>
+                            <select asp-for="PurchaseDetails[i].ProductId"
+                                    class="form-select form-select-sm product-select" >Select
+                                <option value="">Select Product</option>
+                                @if (Model.ProductList != null)
+                                {
+                                    @foreach (var p in Model.ProductList)
+                                    {
+                                        <option value="@p.Value">@p.Text</option>
+                                    }
+                                }
+                            </select>
+                        </td>
+                        <td>
+                            @* <input readonly="readonly" type="text" asp-for="Purchase[i].UnitId" class="form-control unit-input"/> *@
+                            <select readonly="" asp-for="PurchaseDetails[i].UnitId"
+                                    class="form-control unit-input"></select>
+                        </td>
+                        <td>
+                            <input type="number" step="0.01" asp-for="PurchaseDetails[i].Rate"
+                                   class="form-control rate-input"/>
+                        </td>
+                        <td>
+                            <input type="number" asp-for="PurchaseDetails[i].Quantity"
+                                   class="form-control quantity-input"/>
+                        </td>
+                        <td>
+                            <input readonly="readonly" type="number" step="0.01" name="Amount[@i]"
+                                   class="form-control amount "/>
+                        </td>
+                    </tr>
+                }
+                </tbody>
+                <tfoot>
+                <td colspan="5">Total</td>
+                <td class="">
+                    <input asp-for="Amount" type="text" class="form-control total-amount" readonly="readonly"/>
+                </td>
+                </tfoot>
+            </table>
+
+            <button type="submit" onclick="return confirm('Do you want to add purchase?')" class="btn btn-primary m-lg-1 mb-2 mt-1 w-25">Add
+                Purchase
+            </button>
+        </div>
+    </div>
+</form>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+<script>
+    $(document).on('change', '.product-select', function () {
+
+        let productId = $(this).val();
+        let currentRow = $(this).closest('tr');
+        let unitInput = currentRow.find('.unit-input');
+        let rateInput = currentRow.find('.rate-input');
+
+        if (!productId) {
+            unitInput.val('');
+            rateInput.val('');
+            return;
+        }
+
+        $.ajax({
+            url: '@Url.Action("GetProductUnit", "DropdownProvider")',
+            type: 'GET',
+            data: {productId: productId},
+            success: function (response) {
+                if (response) {
+                    unitInput.empty(); // remove old options
+                    unitInput.append(
+                        $('<option>', {
+                            value: response.unitId,
+                            text: response.unitName,
+                            selected: true
+                        })
+                    );
+                    rateInput.val(response.price);
+                }
+            },
+            error: function (xhr) {
+                console.error(xhr.responseText);
+                alert('Failed to fetch unit');
+            }
+        });
+    });
+
+    $(document).on('change', '.quantity-input ', function () {
+        let quantity = $(this).val();
+        let currentRow = $(this).closest('tr');
+        let rate = currentRow.find('.rate-input');
+        let amount = currentRow.find('.amount');
+        amount.val(quantity * rate.val());
+        calculateGrandTotal();
+    });
+
+    $(document).on('change', '.rate-input ', function () {
+        let rate = $(this).val();
+        let currentRow = $(this).closest('tr');
+        let quantity = currentRow.find('.quantity-input');
+        let amount = currentRow.find('.amount');
+        amount.val(rate * quantity.val());
+        calculateGrandTotal();
+    });
+
+
+</script>
+
+<script>
+    function calculateGrandTotal() {
+        let total = 0;
+
+        $(".amount").each(function () {
+            let amount = parseFloat($(this).val()) || 0;
+            total += amount;
+        });
+
+        $(".total-amount").val(total.toFixed(2));
+
+    }
+</script>
+
+
+

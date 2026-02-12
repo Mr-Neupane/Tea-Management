@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace TeaManagement.Migrations
 {
     /// <inheritdoc />
-    public partial class initial : Migration
+    public partial class InitialMigrations : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -183,6 +183,7 @@ namespace TeaManagement.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     stakeholder_type = table.Column<int>(type: "integer", nullable: false),
                     full_name = table.Column<string>(type: "text", nullable: false),
+                    stakeholder_code = table.Column<string>(type: "text", nullable: false),
                     email = table.Column<string>(type: "text", nullable: true),
                     phone_number = table.Column<string>(type: "text", nullable: true),
                     address = table.Column<string>(type: "text", nullable: true),
@@ -305,6 +306,37 @@ namespace TeaManagement.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "purchase",
+                schema: "inventory",
+                columns: table => new
+                {
+                    id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    supplier_id = table.Column<int>(type: "integer", nullable: false),
+                    purchase_no = table.Column<string>(type: "text", nullable: false),
+                    bill_no = table.Column<string>(type: "text", nullable: true),
+                    gross_amount = table.Column<decimal>(type: "numeric", nullable: false),
+                    discount = table.Column<decimal>(type: "numeric", nullable: false),
+                    net_amount = table.Column<decimal>(type: "numeric", nullable: false),
+                    txn_date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    rec_status = table.Column<char>(type: "character(1)", nullable: false),
+                    status = table.Column<int>(type: "integer", nullable: false),
+                    rec_date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    rec_by_id = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("pk_purchase", x => x.id);
+                    table.ForeignKey(
+                        name: "fk_purchase_stakeholders_supplier_id",
+                        column: x => x.supplier_id,
+                        principalSchema: "stakeholder",
+                        principalTable: "stakeholders",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "receivable",
                 schema: "accounting",
                 columns: table => new
@@ -349,6 +381,8 @@ namespace TeaManagement.Migrations
                     product_id = table.Column<int>(type: "integer", nullable: false),
                     factory_id = table.Column<int>(type: "integer", nullable: false),
                     quantity = table.Column<decimal>(type: "numeric", nullable: false),
+                    sale_no = table.Column<string>(type: "text", nullable: false),
+                    bill_no = table.Column<string>(type: "text", nullable: true),
                     price = table.Column<decimal>(type: "numeric", nullable: false),
                     water_quantity = table.Column<decimal>(type: "numeric", nullable: false),
                     net_quantity = table.Column<decimal>(type: "numeric", nullable: false),
@@ -376,6 +410,50 @@ namespace TeaManagement.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "purchase_details",
+                schema: "inventory",
+                columns: table => new
+                {
+                    id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    purchase_id = table.Column<int>(type: "integer", nullable: false),
+                    product_id = table.Column<int>(type: "integer", nullable: false),
+                    unit_id = table.Column<int>(type: "integer", nullable: false),
+                    quantity = table.Column<decimal>(type: "numeric", nullable: false),
+                    rate = table.Column<decimal>(type: "numeric", nullable: false),
+                    discount = table.Column<decimal>(type: "numeric", nullable: false),
+                    rec_status = table.Column<char>(type: "character(1)", nullable: false),
+                    status = table.Column<int>(type: "integer", nullable: false),
+                    rec_date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    rec_by_id = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("pk_purchase_details", x => x.id);
+                    table.ForeignKey(
+                        name: "fk_purchase_details_product_product_id",
+                        column: x => x.product_id,
+                        principalSchema: "inventory",
+                        principalTable: "product",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "fk_purchase_details_purchase_purchase_id",
+                        column: x => x.purchase_id,
+                        principalSchema: "inventory",
+                        principalTable: "purchase",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "fk_purchase_details_unit_unit_id",
+                        column: x => x.unit_id,
+                        principalSchema: "inventory",
+                        principalTable: "unit",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "ix_bonus_factory_id",
                 schema: "general_setup",
@@ -398,6 +476,30 @@ namespace TeaManagement.Migrations
                 name: "ix_product_unit_id",
                 schema: "inventory",
                 table: "product",
+                column: "unit_id");
+
+            migrationBuilder.CreateIndex(
+                name: "ix_purchase_supplier_id",
+                schema: "inventory",
+                table: "purchase",
+                column: "supplier_id");
+
+            migrationBuilder.CreateIndex(
+                name: "ix_purchase_details_product_id",
+                schema: "inventory",
+                table: "purchase_details",
+                column: "product_id");
+
+            migrationBuilder.CreateIndex(
+                name: "ix_purchase_details_purchase_id",
+                schema: "inventory",
+                table: "purchase_details",
+                column: "purchase_id");
+
+            migrationBuilder.CreateIndex(
+                name: "ix_purchase_details_unit_id",
+                schema: "inventory",
+                table: "purchase_details",
                 column: "unit_id");
 
             migrationBuilder.CreateIndex(
@@ -459,6 +561,10 @@ namespace TeaManagement.Migrations
                 schema: "accounting");
 
             migrationBuilder.DropTable(
+                name: "purchase_details",
+                schema: "inventory");
+
+            migrationBuilder.DropTable(
                 name: "receivable",
                 schema: "accounting");
 
@@ -471,8 +577,8 @@ namespace TeaManagement.Migrations
                 schema: "accounting");
 
             migrationBuilder.DropTable(
-                name: "stakeholders",
-                schema: "stakeholder");
+                name: "purchase",
+                schema: "inventory");
 
             migrationBuilder.DropTable(
                 name: "factory",
@@ -487,8 +593,8 @@ namespace TeaManagement.Migrations
                 schema: "accounting");
 
             migrationBuilder.DropTable(
-                name: "ledger",
-                schema: "accounting");
+                name: "stakeholders",
+                schema: "stakeholder");
 
             migrationBuilder.DropTable(
                 name: "product_category",
@@ -497,6 +603,10 @@ namespace TeaManagement.Migrations
             migrationBuilder.DropTable(
                 name: "unit",
                 schema: "inventory");
+
+            migrationBuilder.DropTable(
+                name: "ledger",
+                schema: "accounting");
         }
     }
 }

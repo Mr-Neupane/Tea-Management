@@ -1,6 +1,5 @@
 ﻿using System.Transactions;
 using TeaManagement.Dtos;
-using TeaManagement.Enums;
 using TeaManagement.Interface;
 
 namespace TeaManagement.Manager;
@@ -8,43 +7,39 @@ namespace TeaManagement.Manager;
 public class FactoryManager
 {
     private readonly IFactoryService _factoryService;
-    private readonly ILedgerService _ledgerService;
-    private readonly IStakeholderService _stakeholderService;
+    private readonly StakeholderManager _stakeholderManager;
 
 
-    public FactoryManager(IFactoryService factoryService, ILedgerService ledgerService,
-        IStakeholderService stakeholderService)
+    public FactoryManager(IFactoryService factoryService, StakeholderManager stakeholderManager)
     {
         _factoryService = factoryService;
-        _ledgerService = ledgerService;
-        _stakeholderService = stakeholderService;
+        _stakeholderManager = stakeholderManager;
     }
 
-    public async Task AddNewFactory(NewFactoryDto dto, NewLedgerDto ledger)
+    public async Task AddNewFactory(NewFactoryDto dto)
     {
         using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
         {
-            var newLedger = await _ledgerService.AddLedgerAsync(ledger);
+            var stakeholder = new StakeholderDto
+            {
+                IsSupplier = false,
+                FullName = dto.Name.Trim(),
+                Email = null,
+                PhoneNumber = dto.ContactNumber,
+                Address = dto.Address,
+            };
+            var ledger = await _stakeholderManager.RecordStakeholder(stakeholder);
+
             var fac = new NewFactoryDto
             {
                 Name = dto.Name.Trim(),
                 Address = dto.Address,
                 ContactNumber = dto.ContactNumber,
                 Country = dto.Country,
-                LedgerId = newLedger.Id
+                LedgerId = ledger.Id
             };
             await _factoryService.AddFactoryAsync(fac);
 
-            var stakeholder = new StakeholderDto
-            {
-                StakeholderType = (int)StakeholderType.Customer,
-                FullName = dto.Name.Trim(),
-                Email = null,
-                PhoneNumber = dto.ContactNumber,
-                Address = dto.Address,
-                LedgerId = newLedger.Id,
-            };
-            await _stakeholderService.RecordStakeholderAsync(stakeholder);
 
             scope.Complete();
         }

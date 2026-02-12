@@ -161,6 +161,13 @@ public class MigrationController : Controller
                         Code = "80.1",
                         ParentId = null,
                         SubParentId = -1
+                    }, new ()
+                    {
+                        Id = -15,
+                        Name = "Creditors",
+                        Code = "50",
+                        ParentId = -2,
+                        SubParentId =null
                     }
                 };
                 await _context.Ledgers.AddRangeAsync(defLedger);
