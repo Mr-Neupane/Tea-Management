@@ -29,11 +29,13 @@ public class SaleController : Controller
     public IActionResult NewSale()
     {
         var prod = _dropdownProvider.GetProductsForSales();
+        var teaClass = _dropdownProvider.GetTeaClass();
         var fac = _dropdownProvider.GetAllFactories();
         var vm = new NewSalesVm
         {
             Factories = new SelectList(fac, "Id", "Name"),
             Products = new SelectList(prod, "Id", "Name"),
+            TeaClass = new SelectList(teaClass, "Id", "Name")
         };
         return View(vm);
     }
@@ -43,19 +45,20 @@ public class SaleController : Controller
     {
         try
         {
-            var dto = new SalesDto
-            {
-                ProductId = vm.ProductId,
-                TxnDate = vm.TxnDate,
-                Quantity = vm.Quantity,
-                Price = vm.Price,
-                BillNo = vm.BillNo,
-                WaterQuantity = vm.WaterQuantity,
-                SalesAmount = Math.Round((vm.Quantity - vm.WaterQuantity) * vm.Price, 2),
-                FactoryId = vm.FactoryId
-            };
+            var saleDetails = vm.SalesDetails.Where(x => x.ProductId != 0).ToList();
+            // var dto = new SalesDto
+            // {
+            //     ProductId = vm.ProductId,
+            //     TxnDate = vm.TxnDate,
+            //     Quantity = vm.Quantity,
+            //     Price = vm.Price,
+            //     BillNo = vm.BillNo,
+            //     WaterQuantity = vm.WaterQuantity,
+            //     SalesAmount = Math.Round((vm.Quantity - vm.WaterQuantity) * vm.Price, 2),
+            //     FactoryId = vm.FactoryId
+            // };
 
-            await _salesTransactionManager.AddSales(dto);
+            // await _salesTransactionManager.AddSales(dto);
             _toastNotification.AddSuccessToastMessage("Sales added successfully");
             return View();
         }

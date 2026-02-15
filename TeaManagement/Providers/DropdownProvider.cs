@@ -58,7 +58,7 @@ public class DropdownProvider : Controller
 
     public List<DropdownListDto> GetProductsForPurchase()
     {
-        var prod = _context.Products.Where(x => x.Status == (int)Status.Active && x.CategoryId != -1).Select(x =>
+        var prod = _context.Products.Where(x => x.Status == (int)Status.Active ).Select(x =>
                 new DropdownListDto
                 {
                     Id = x.Id,
@@ -130,5 +130,15 @@ public class DropdownProvider : Controller
             .FirstOrDefault();
 
         return new JsonResult(product);
+    }
+
+    public List<DropdownListDto> GetTeaClass()
+    {
+        var tClass = _context.TeaClass.Where(x => x.Status == (int)Status.Active).Select(x => new DropdownListDto()
+        {
+            Id = x.Id,
+            Name = x.Name
+        }).ToList();
+        return tClass;
     }
 }

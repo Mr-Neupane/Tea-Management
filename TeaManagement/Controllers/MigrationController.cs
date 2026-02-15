@@ -161,57 +161,98 @@ public class MigrationController : Controller
                         Code = "80.1",
                         ParentId = null,
                         SubParentId = -1
-                    }, new ()
+                    },
+                    new()
                     {
                         Id = -15,
                         Name = "Creditors",
                         Code = "50",
                         ParentId = -2,
-                        SubParentId =null
+                        SubParentId = null
                     }
                 };
                 await _context.Ledgers.AddRangeAsync(defLedger);
                 await _context.SaveChangesAsync();
+            }
 
-                var existingCat = await _context.Categories.Where(x => x.Id == -1).FirstOrDefaultAsync();
-                if (existingCat == null)
+            var existingCat = await _context.Categories.Where(x => x.Id == -1).FirstOrDefaultAsync();
+            if (existingCat == null)
+            {
+                var defCat = new Category
                 {
-                    var defCat = new Category
+                    Id = -1,
+                    Name = "Tea",
+                    ParentCategoryId = null
+                };
+                await _context.Categories.AddAsync(defCat);
+                await _context.SaveChangesAsync();
+            }
+
+            var existingProd = await _context.Products.Where(x => x.Id == -1).FirstOrDefaultAsync();
+            if (existingProd == null)
+            {
+                var defProd = new Product
+                {
+                    Id = -1,
+                    Name = "Green Tea Leaves",
+                    CategoryId = -1,
+                    UnitId = -1
+                };
+                await _context.Products.AddAsync(defProd);
+                await _context.SaveChangesAsync();
+            }
+
+            var existingUnit = await _context.ProductUnits.Where(x => x.Id == -1).FirstOrDefaultAsync();
+            if (existingUnit == null)
+            {
+                var unit = new ProductUnit
+                {
+                    Id = -1,
+                    UnitName = "KG",
+                    UnitDescription = "Kilogram"
+                };
+                await _context.ProductUnits.AddAsync(unit);
+                await _context.SaveChangesAsync();
+            }
+
+            var existingClass = await _context.TeaClass.Where(x => x.Id == -1).FirstOrDefaultAsync();
+            if (existingClass == null)
+            {
+                var teaClass = new List<TeaClass>
+                {
+                    new()
                     {
                         Id = -1,
-                        Name = "Tea",
-                        ParentCategoryId = null
-                    };
-                    await _context.Categories.AddAsync(defCat);
-                    await _context.SaveChangesAsync();
-                }
-
-                var existingUnit = await _context.ProductUnits.Where(x => x.Id == -1).FirstOrDefaultAsync();
-                if (existingUnit == null)
-                {
-                    var unit = new ProductUnit
+                        Name = "SF",
+                        Description = "Super Fine"
+                    },
+                    new()
                     {
-                        Id = -1,
-                        UnitName = "KG",
-                        UnitDescription = "Kilogram"
-                    };
-                    await _context.ProductUnits.AddAsync(unit);
-                    await _context.SaveChangesAsync();
-                }
-
-                var existingProd = await _context.Products.Where(x => x.Id == -1).FirstOrDefaultAsync();
-                if (existingProd == null)
-                {
-                    var defProd = new Product
+                        Id = -2,
+                        Name = "A",
+                        Description = "Excellent Quality"
+                    },
+                    new()
                     {
-                        Id = -1,
-                        Name = "Green Tea Leaves",
-                        CategoryId = -1,
-                        UnitId = -1
-                    };
-                    await _context.Products.AddAsync(defProd);
-                    await _context.SaveChangesAsync();
-                }
+                        Id = -3,
+                        Name = "B",
+                        Description = "Good Quality"
+                    },
+                    new()
+                    {
+                        Id = -4,
+                        Name = "C",
+                        Description = "Average Grade"
+                    },
+                    new()
+                    {
+                        Id = -5,
+                        Name = "C-",
+                        Description = "Not So Good/ Worst Grade"
+                    }
+                };
+                await _context.TeaClass.AddRangeAsync(teaClass);
+                await _context.SaveChangesAsync();
             }
 
             _toastNotification.AddSuccessToastMessage("Migration added successfully.");

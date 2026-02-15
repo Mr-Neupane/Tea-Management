@@ -23,6 +23,8 @@ public class ApplicationDbContext : DbContext
     public DbSet<AccountingTransaction> AccTransaction { get; set; }
     public DbSet<TransactionDetails> AccTransactionDetails { get; set; }
     public DbSet<Purchase> Purchases { get; set; }
+    public DbSet<ProductSp> Sp { get; set; }
+    public DbSet<TeaClass> TeaClass { get; set; }
 
 
     protected override void OnConfiguring(DbContextOptionsBuilder options)
