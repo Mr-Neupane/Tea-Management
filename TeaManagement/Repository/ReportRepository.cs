@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using TeaManagement.Dtos;
+using TeaManagement.Enums;
 using TeaManagement.Repository.Interface;
 
 namespace TeaManagement.Repository;
@@ -38,6 +39,7 @@ public class ReportRepository : IReportRepository
             {
                 Id = x.Id,
                 FactoryName = x.Name,
+                ContactNo = x.ContactNumber,
                 FactoryCountry = x.Country,
                 FactoryAddress = x.Address,
             }).ToListAsync();
@@ -59,5 +61,39 @@ public class ReportRepository : IReportRepository
                 }
             ).ToListAsync();
         return res;
+    }
+
+    public async Task<List<StakeholderReportDto>> GetStakeholderReportAsync(bool isSupplier, int? status)
+    {
+        if (isSupplier)
+        {
+            var res = await _context.Stakeholders
+                .Where(x => (x.Status == status || null == status) &&
+                            x.StakeholderType == (int)StakeholderType.Supplier).Select(x => new StakeholderReportDto
+                {
+                    StakeholderId = x.Id,
+                    StakeholderName = x.FullName,
+                    Email = x.Email,
+                    PanNo = 0,
+                    ContactNo = x.PhoneNumber,
+                    Address = x.Address
+                }).ToListAsync();
+            return res;
+        }
+        else
+        {
+            var res = await _context.Stakeholders
+                .Where(x => (x.Status == status || null == status) &&
+                            x.StakeholderType == (int)StakeholderType.Customer).Select(x => new StakeholderReportDto
+                {
+                    StakeholderId = x.Id,
+                    StakeholderName = x.FullName,
+                    Email = x.Email,
+                    PanNo = 0,
+                    ContactNo = x.PhoneNumber,
+                    Address = x.Address
+                }).ToListAsync();
+            return res;
+        }
     }
 }

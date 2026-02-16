@@ -17,12 +17,14 @@ public class ApplicationDbContext : DbContext
     public DbSet<CoaLedger> ChartOfAccounts { get; set; }
     public DbSet<Ledger> Ledgers { get; set; }
     public DbSet<Receivable> Receivable { get; set; }
-    public DbSet<Payable> Payable { get; set; }
+    public DbSet<Payable> Payables { get; set; }
     public DbSet<Stakeholder> Stakeholders { get; set; }
     public DbSet<ProductUnit> ProductUnits { get; set; }
     public DbSet<AccountingTransaction> AccTransaction { get; set; }
     public DbSet<TransactionDetails> AccTransactionDetails { get; set; }
     public DbSet<Purchase> Purchases { get; set; }
+    public DbSet<ProductSp> Sp { get; set; }
+    public DbSet<TeaClass> TeaClass { get; set; }
 
 
     protected override void OnConfiguring(DbContextOptionsBuilder options)

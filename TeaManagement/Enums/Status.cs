@@ -3,7 +3,7 @@
 public enum Status
 {
     Active = 1,
-    Reversed = 2,
+    Inactive = 2,
 }
 
 public enum RecStatus

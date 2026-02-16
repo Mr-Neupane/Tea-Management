@@ -105,9 +105,11 @@
         </div>
     </div>
 </form>
+
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 
 <script>
+
     $(document).on('change', '.product-select', function () {
 
         let productId = $(this).val();
@@ -144,41 +146,4 @@
             }
         });
     });
-
-    $(document).on('change', '.quantity-input ', function () {
-        let quantity = $(this).val();
-        let currentRow = $(this).closest('tr');
-        let rate = currentRow.find('.rate-input');
-        let amount = currentRow.find('.amount');
-        amount.val(quantity * rate.val());
-        calculateGrandTotal();
-    });
-
-    $(document).on('change', '.rate-input ', function () {
-        let rate = $(this).val();
-        let currentRow = $(this).closest('tr');
-        let quantity = currentRow.find('.quantity-input');
-        let amount = currentRow.find('.amount');
-        amount.val(rate * quantity.val());
-        calculateGrandTotal();
-    });
-
-
 </script>
-
-<script>
-    function calculateGrandTotal() {
-        let total = 0;
-
-        $(".amount").each(function () {
-            let amount = parseFloat($(this).val()) || 0;
-            total += amount;
-        });
-
-        $(".total-amount").val(total.toFixed(2));
-
-    }
-</script>
-
-
-

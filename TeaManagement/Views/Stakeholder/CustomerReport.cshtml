@@ -1,0 +1,14 @@
+﻿
+@model List<TeaManagement.Dtos.StakeholderReportDto>
+
+@{
+    ViewData["Title"] = "Customer Report";
+}
+
+@if (Model.Any())
+{
+    @foreach (var t in Model)
+    {
+        <p> @t.StakeholderName </p>
+    }
+}

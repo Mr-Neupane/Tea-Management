@@ -1,4 +1,5 @@
-﻿using TeaManagement.Dtos;
+﻿using Microsoft.EntityFrameworkCore;
+using TeaManagement.Dtos;
 using TeaManagement.Entities;
 using TeaManagement.Enums;
 using TeaManagement.Interface;
@@ -32,21 +33,69 @@ public class StakeholderService : IStakeholderService
         return ins;
     }
 
+
     private string GetStakeholderNumber(bool isSupplier)
     {
         if (isSupplier)
         {
-            var cn = _context.Stakeholders.Count(x => x.StakeholderType == (int)StakeholderType.Supplier)+1;
+            var cn = _context.Stakeholders.Count(x => x.StakeholderType == (int)StakeholderType.Supplier) + 1;
             const string prefix = "S0000";
             var stakeholderNumber = string.Concat(prefix, cn);
             return stakeholderNumber;
         }
         else
         {
-            var cn = _context.Stakeholders.Count(x => x.StakeholderType == (int)StakeholderType.Customer)+1;
+            var cn = _context.Stakeholders.Count(x => x.StakeholderType == (int)StakeholderType.Customer) + 1;
             const string prefix = "C0000";
             var stakeholderNumber = string.Concat(prefix, cn);
             return stakeholderNumber;
+        }
+    }
+
+    public async Task DeactivateStakeholderAsync(int stakeholderId)
+    {
+        var stakeholder = await _context.Stakeholders.FindAsync(stakeholderId);
+
+        if (stakeholder == null)
+        {
+            throw new Exception("Stakeholder not found");
+        }
+        else
+        {
+            if (stakeholder.StakeholderType == (int)StakeholderType.Supplier)
+            {
+                var payable = _context.Payables.Where(x =>
+                    x.StakeholderId == stakeholder.Id && stakeholder.Status == (int)Status.Active).Sum(x => x.Amount);
+                var paid = _context.Payables.Where(x =>
+                    x.StakeholderId == stakeholder.Id && stakeholder.Status == (int)Status.Active).Sum(x => x.Amount);
+
+                if (payable - paid == 0)
+                {
+                    stakeholder.Status = (int)Status.Inactive;
+                    await _context.SaveChangesAsync();
+                }
+                else
+                {
+                    throw new Exception("Payable amount must be zero to deactivate supplier.");
+                }
+            }
+            else
+            {
+                var receivable = _context.Receivable.Where(x =>
+                    x.StakeholderId == stakeholder.Id && stakeholder.Status == (int)Status.Active).Sum(x => x.Amount);
+                var received = _context.Receivable.Where(x =>
+                    x.StakeholderId == stakeholder.Id && stakeholder.Status == (int)Status.Active).Sum(x => x.Amount);
+
+                if (receivable - received == 0)
+                {
+                    stakeholder.Status = (int)Status.Inactive;
+                    await _context.SaveChangesAsync();
+                }
+                else
+                {
+                    throw new Exception("Receivable amount must be zero to deactivate customer.");
+                }
+            }
         }
     }
 }

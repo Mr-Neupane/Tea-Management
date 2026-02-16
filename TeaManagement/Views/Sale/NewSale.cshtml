@@ -1,69 +1,191 @@
 ﻿@model TeaManagement.ViewModels.NewSalesVm
+
 @{
-    ViewData["Title"] = "New Sale";
+    ViewData["Title"] = "Add Sales";
 }
-<div class="container mt-5">
-    <div class="row justify-content-center">
-        <div class="col-md-5">   <!-- Controls card width -->
-            <div class="card shadow-sm">
-                <div class="card-header text-center">
-                    <h5 class="mb-0">New Sale</h5>
-                </div>
 
-                <div class="card-body">
-                    <form method="post" asp-action="NewSale">
-                        <div class="mb-3">
-                            <label asp-for="ProductId">Select Product</label>
-                            <select asp-for="ProductId" id="productid" class="form-control">
-                                <option value="0">Select</option>
-                                @if (Model.Products != null)
-                                {
-                                    foreach (var p in Model.Products)
-                                    {
-                                        <option value="@p.Value">@p.Text</option>
-                                    }
-                                }
+<style>
+    .scrollable {
+        height: 500px; /* Required */
+        overflow-y: auto; /* Adds vertical scrollbar when needed */
+        border: 1px solid #ccc;
+    }
+</style>
+<form method="post" asp-action="NewSale">
+    <div class="container mt-4">
+        <div class="card shadow border-0">
+            <div class="card-header ">
+                <h6 class="mb-3 fw-semibold">Additional Purchase Details</h6>
+            </div>
+            <div class="card-body">
+                <div class="row g-3">
 
-                            </select>
-                        </div>
+                    <div class="col-md-4 w-auto">
+                        <label class="form-label ">Date</label>
+                        <input class="form-control " type="text"/>
+                    </div>
 
-                        <div class="mb-3">
-                            <label asp-for="Quantity">Quantity <span class="text-danger">*</span></label>
-                            <input asp-for="Quantity" type="number" required="required" class="form-control"/>
-                        </div>
-                        <div class="mb-3">
-                            <label asp-for="Price">Rate Per KG <span class="text-danger">*</span></label>
-                            <input asp-for="Price" type="number" required="required" class="form-control"/>
-                        </div>
-                        <div class="mb-3">
-                            <label asp-for="WaterQuantity">Water Deducted</label>
-                            <input asp-for="WaterQuantity" type="number" required="required" class="form-control"
-                                   value="0"/>
-                        </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Customer <span class="text-danger">*</span></label>
+                        <select asp-for="FactoryId"
+                                asp-items="Model.Factories"
+                                class="form-control" required="required">
+                            <option value="">Select Customer</option>
+                        </select>
 
 
-                        <div class="mb-3">
-                            <label asp-for="FactoryId">Select Factory</label>
-                            <select asp-for="FactoryId" id="factoryid" class="form-control">
-                                <option value="0">Select</option>
-                                @if (Model.Factories != null)
-                                {
-                                    foreach (var p in Model.Factories)
-                                    {
-                                        <option value="@p.Value">@p.Text</option>
-                                    }
-                                }
+                    </div>
 
-                            </select>
-                        </div>
+                    <div class="col-md-4 w-auto">
+                        <label class="form-label">Bill No</label>
+                        <input type="text" class="form-control"/>
+                    </div>
 
-                        <div>
-                            <button type="submit" class="btn btn-primary ">Save</button>
-                            <button asp-action="NewSale" formmethod="get" class="btn btn-danger">Reset</button>
-                        </div>
-                    </form>
                 </div>
             </div>
         </div>
     </div>
-</div>
+
+    <div class="container mt-5 ">
+        <div class="card shadow row justify-content-center ">
+            <div class="scrollable">
+
+                <table class="table table-bordered table-striped ">
+                    <thead style="position: sticky; background: #fff; z-index: 10;   top: 0;">
+                    <tr>
+                        <th width="50px">SN</th>
+                        <th>Product Name</th>
+                        <th width="125px">Class</th>
+                        <th width="125px">Unit</th>
+                        <th width="100px">Rate</th>
+                        <th width="100px">Quantity</th>
+                        <th width="100px">Water Quantity</th>
+                        <th width="100px">Amount</th>
+                    </tr>
+                    </thead>
+
+
+                    <tbody>
+                    @for (int i = 0; i <= 8; i++)
+                    {
+                        <tr>
+                            <td>@(i + 1)</td>
+                            <td>
+                                <select asp-for="SalesDetails[i].ProductId"
+                                        class="form-select form-select-sm product-select">Select
+                                    <option value="">Select Product</option>
+                                    @if (Model.Products != null)
+                                    {
+                                        @foreach (var p in Model.Products)
+                                        {
+                                            <option value="@p.Value">@p.Text</option>
+                                        }
+                                    }
+                                </select>
+                            </td>
+                            <td>
+                                <select readonly="" asp-for="SalesDetails[i].UnitId"
+                                        class="form-control class-input"></select>
+                            </td>
+                            <td>
+                                @* <input readonly="readonly" type="text" asp-for="Purchase[i].UnitId" class="form-control unit-input"/> *@
+                                <select readonly="" asp-for="SalesDetails[i].UnitId"
+                                        class="form-control unit-input"></select>
+                            </td>
+                            <td>
+                                <input type="number" step="0.01" asp-for="SalesDetails[i].Price"
+                                       class="form-control rate-input"/>
+                            </td>
+                            <td>
+                                <input type="number" asp-for="SalesDetails[i].Quantity"
+                                       class="form-control quantity-input"/>
+                            </td>
+                            <td>
+                                <input type="number" asp-for="SalesDetails[i].WaterQuantity"
+                                       class="form-control water-quantity-input"/>
+                            </td>
+                            <td>
+                                <input readonly="readonly" type="number" step="0.01" name="Amount[@i]"
+                                       class="form-control amount "/>
+                            </td>
+                        </tr>
+                    }
+                    </tbody>
+                    <tfoot>
+                    <td colspan="7">Total</td>
+                    <td class="">
+                        <input asp-for="Amount" type="text" class="form-control total-amount" readonly="readonly"/>
+                    </td>
+                    </tfoot>
+                </table>
+            </div>
+            <button type="submit" onclick="return confirm('Do you want to add purchase?')"
+                    class="btn btn-primary m-lg-1 mb-2 mt-1 w-25">Add
+                Sale
+            </button>
+        </div>
+    </div>
+</form>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+<script>
+
+    $(document).on('change', '.product-select', function () {
+
+        let productId = $(this).val();
+        let currentRow = $(this).closest('tr');
+        let unitInput = currentRow.find('.unit-input');
+        let classInput = currentRow.find('.class-input');
+        let rateInput = currentRow.find('.rate-input');
+
+        if (!productId) {
+            unitInput.val('');
+            rateInput.val('');
+            return;
+        }
+
+        $.ajax({
+            url: '@Url.Action("GetProductUnit", "DropdownProvider")',
+            type: 'GET',
+            data: {productId: productId},
+            success: function (response) {
+                if (response) {
+                    unitInput.empty(); // remove old options
+                    unitInput.append(
+                        $('<option>', {
+                            value: response.unitId,
+                            text: response.unitName,
+                            selected: true
+                        })
+                    );
+                    rateInput.val(response.price);
+                }
+            },
+            error: function (xhr) {
+                console.error(xhr.responseText);
+                alert('Failed to fetch unit');
+            }
+        });
+
+        $.ajax({
+            url: '@Url.Action("GetTeaClass", "DropdownProvider")',
+            type: 'GET',
+            // data: {productId: productId},
+            success: function (response) {
+                classInput.empty();
+                $.each(response, function(index, item) {
+                    classInput.append(
+                        $('<option>', {
+                            value: item.id,
+                            text: item.name
+                        })
+                    );
+                })   
+            },
+            error: function (xhr) {
+                console.error(xhr.responseText);
+                alert('Failed to fetch unit');
+            }
+        });
+    });
+</script>

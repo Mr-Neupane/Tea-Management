@@ -24,7 +24,7 @@ public class PurchaseController : Controller
 
     public IActionResult Index()
     {
-        var products = _dropdownProvider.GetAllProducts();
+        var products = _dropdownProvider.GetProductsForPurchase();
         var suppliers = _dropdownProvider.GetSupplierList();
         var vm = new PurchaseVm
         {

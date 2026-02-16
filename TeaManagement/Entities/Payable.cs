@@ -7,5 +7,9 @@ namespace TeaManagement.Entities
     {
         public int StakeholderId { get; set; }
         public decimal Amount { get; set; }
+
+        public DateTime TxnDate { get; set; }
+        public int? PaymentId { get; set; }
+        public virtual Stakeholder Stakeholder { get; set; }
     }
 }

@@ -8,4 +8,6 @@ public interface IFactoryService
 {
     public Task<NewFactory> AddFactoryAsync(NewFactoryDto dto);
     public Task<NewFactory> GetFactoryByIdAsync(int id);
+
+    public Task DeactivateFactoryAsync(int factoryId);
 }

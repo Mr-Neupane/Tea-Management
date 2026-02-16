@@ -75,7 +75,7 @@
       display: none;
     }
 
-    .dropdown-submenu.show > .dropdown-menu {
+    .dropdown-submenu:hover > .dropdown-menu {
       display: block;
     }
 
@@ -132,6 +132,12 @@
                 </ul>
               </li>
               <li class="dropdown-submenu">
+                <a class="dropdown-item dropdown-toggle" href="#">Factory</a>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" asp-controller="Factory" asp-action="NewFactory">Add Factory</a></li>
+                  <li><a class="dropdown-item" asp-controller="Factory" asp-action="FactoryReport">Factory Report</a></li>
+                </ul>
+              </li> <li class="dropdown-submenu">
                 <a class="dropdown-item dropdown-toggle" href="#">Bank</a>
                 <ul class="dropdown-menu">
                   <li><a class="dropdown-item" asp-controller="Bank" asp-action="CreateBank">Create Bank</a></li>
@@ -161,23 +167,59 @@
               data-bs-auto-close="outside"
               aria-expanded="false"
             >
+              Stakeholder
+            </a>
+
+            <ul class="dropdown-menu" aria-labelledby="stakeholderDropdown">
+              <li class="dropdown-submenu">
+                <a class="dropdown-item dropdown-toggle" href="#">Supplier</a>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" asp-controller="Stakeholder" asp-action="AddSupplier">Add Supplier</a>
+                  </li>
+                  <li><a class="dropdown-item" asp-controller="Stakeholder" asp-action="SupplierReport">Supplier
+                      Report</a>
+                  </li>
+                </ul>
+              </li>
+              <li class="dropdown-submenu">
+                <a class="dropdown-item dropdown-toggle" href="#">Customer</a>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" asp-controller="Stakeholder" asp-action="AddCustomer">Add Customer</a>
+                  </li>
+                  <li><a class="dropdown-item" asp-controller="Stakeholder" asp-action="CustomerReport">Customer
+                      Report</a>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+          </li>
+
+          <li class="nav-item dropdown d-none d-md-block">
+            <a
+              class="nav-link dropdown-toggle"
+              href="#"
+              id="inventoryDropdown"
+              role="button"
+              data-bs-toggle="dropdown"
+              data-bs-auto-close="outside"
+              aria-expanded="false"
+            >
               Inventory
             </a>
 
             <ul class="dropdown-menu" aria-labelledby="inventoryDropdown">
               <li class="dropdown-submenu">
-                <a class="dropdown-item dropdown-toggle" href="#">Transactions</a>
+                <a class="dropdown-item dropdown-toggle" href="#">Purchase</a>
                 <ul class="dropdown-menu">
-                  <li><a class="dropdown-item" asp-controller="Sale" asp-action="NewSale">Add Sale</a></li>
-                  @* <li><a class="dropdown-item" asp-controller="Ledger" asp-action="LedgerReport">Ledger List</a></li> *@
-                  @* <li><a class="dropdown-item" asp-controller="Bank" asp-action="BankReport">Bank Report</a></li> *@
-
+                  <li><a class="dropdown-item" asp-controller="Purchase" asp-action="Index">Add Purchase</a></li>
                 </ul>
               </li>
-              <li><a class="dropdown-item" asp-controller="Income" asp-action="RecordIncome">Record Income</a></li>
-              <li><a class="dropdown-item" asp-controller="Liability" asp-action="AddLiability">Record Liability</a>
+              <li class="dropdown-submenu">
+                <a class="dropdown-item dropdown-toggle" href="#">Sales</a>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" asp-controller="Sale" asp-action="NewSale">Add Sale</a></li>
+                </ul>
               </li>
-              <li><a class="dropdown-item" asp-controller="Voucher" asp-action="AddJv">Record Journal Voucher</a></li>
             </ul>
           </li>
 
@@ -701,6 +743,9 @@
     });
   });
 </script>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+<script src="/js/amountCalculation.js"></script>
 
 
 

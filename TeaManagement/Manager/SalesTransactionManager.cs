@@ -1,4 +1,5 @@
 ﻿using System.Transactions;
+using TeaManagement.Constraints;
 using TeaManagement.Dtos;
 using TeaManagement.Interface;
 using TeaManagement.Providers;
@@ -26,37 +27,27 @@ public class SalesTransactionManager
     {
         using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
         {
-            var salesDto = new SalesDto
-            {
-                ProductId = dto.ProductId,
-                Quantity = Math.Round(dto.Quantity, 2),
-                Price = dto.Price,
-                BillNo = dto.BillNo,
-                WaterQuantity = dto.WaterQuantity,
-                SalesAmount = dto.SalesAmount,
-                FactoryId = dto.FactoryId,
-            };
-            var sales = await _salesService.AddSalesAsync(salesDto);
+            var sales = await _salesService.AddSalesAsync(dto);
             var drLedgerId = await _idProvider.GetFactoryLedgerIdAsync(dto.FactoryId);
             var acctDto = new AccTransactionDto
             {
                 TxnDate = dto.TxnDate,
                 TxnType = "Sales",
                 TypeId = sales.Id,
-                Amount = dto.SalesAmount,
+                Amount = dto.NetAmount,
                 Details = new List<AccTransactionDetailsDto>
                 {
                     new()
                     {
                         LedgerId = drLedgerId,
                         IsDr = true,
-                        Amount = dto.SalesAmount,
+                        Amount = dto.NetAmount,
                     },
                     new()
                     {
-                        LedgerId = -13,
+                        LedgerId = LedgerIdConstraints.Sales,
                         IsDr = false,
-                        Amount = dto.SalesAmount,
+                        Amount = dto.NetAmount,
                     }
                 }
             };
@@ -66,7 +57,7 @@ public class SalesTransactionManager
             {
                 StakeholderId = stakeholderId,
                 TxnDate = dto.TxnDate,
-                Amount = dto.SalesAmount,
+                Amount = dto.NetAmount,
                 TransactionId = accTxn.Id,
             };
             await _receivableService.RecordReceivableAsync(rec);
