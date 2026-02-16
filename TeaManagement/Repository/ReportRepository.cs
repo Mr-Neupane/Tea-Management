@@ -39,6 +39,7 @@ public class ReportRepository : IReportRepository
             {
                 Id = x.Id,
                 FactoryName = x.Name,
+                ContactNo = x.ContactNumber,
                 FactoryCountry = x.Country,
                 FactoryAddress = x.Address,
             }).ToListAsync();

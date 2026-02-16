@@ -11,14 +11,14 @@ public class NewSalesVm
     public SelectList Factories { get; set; }
     public SelectList Products { get; set; }
     public SelectList TeaClass { get; set; }
-    public List<SalesDetails> SalesDetails { get; set; }
+    public List<SalesDetailsVm> SalesDetails { get; set; }
 }
 
-public class SalesDetails
+public class SalesDetailsVm
 {
     public int ProductId { get; set; }
     public decimal Quantity { get; set; }
-    public decimal UnitId { get; set; }
+    public int UnitId { get; set; }
     public decimal ClassId { get; set; }
     public decimal Price { get; set; }
     public decimal WaterQuantity { get; set; }

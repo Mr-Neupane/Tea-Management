@@ -1,4 +1,5 @@
 ﻿using System.Transactions;
+using Microsoft.EntityFrameworkCore;
 using TeaManagement.Dtos;
 using TeaManagement.Interface;
 
@@ -8,12 +9,17 @@ public class FactoryManager
 {
     private readonly IFactoryService _factoryService;
     private readonly StakeholderManager _stakeholderManager;
+    private readonly IStakeholderService _stakeholderService;
+    private readonly ApplicationDbContext _context;
 
 
-    public FactoryManager(IFactoryService factoryService, StakeholderManager stakeholderManager)
+    public FactoryManager(IFactoryService factoryService, StakeholderManager stakeholderManager,
+        IStakeholderService stakeholderService, ApplicationDbContext context)
     {
         _factoryService = factoryService;
         _stakeholderManager = stakeholderManager;
+        _stakeholderService = stakeholderService;
+        _context = context;
     }
 
     public async Task AddNewFactory(NewFactoryDto dto)
@@ -43,5 +49,14 @@ public class FactoryManager
 
             scope.Complete();
         }
+    }
+
+    public async Task DeactivateFactory(int factoryId)
+    {
+        var stakeholderId = await (from f in _context.Factories
+            join s in _context.Stakeholders on f.LedgerId equals s.LedgerId
+            select s.Id).FirstOrDefaultAsync();
+        await _stakeholderService.DeactivateStakeholderAsync(stakeholderId);
+        await _factoryService.DeactivateFactoryAsync(factoryId);
     }
 }

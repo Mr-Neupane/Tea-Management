@@ -18,14 +18,22 @@ public class SalesService : ISalesService
         var salesNo = GetSalesNo();
         var sales = new Sale
         {
-            ProductId = dto.ProductId,
             FactoryId = dto.FactoryId,
-            Quantity = dto.Quantity,
-            Price = dto.Price,
+            TxnDate = dto.TxnDate.ToUniversalTime(),
             SaleNo = salesNo,
+            Amount = dto.NetAmount,
             BillNo = dto.BillNo,
-            WaterQuantity = dto.WaterQuantity,
-            NetQuantity = dto.Quantity - dto.WaterQuantity,
+            SalesDetails = dto.Details.Select(x => new SaleDetails
+            {
+                ProductId = x.ProductId,
+                UnitId = x.UnitId,
+                Quantity = x.Quantity,
+                Rate = x.Rate,
+                WaterQuantity = x.WaterQuantity,
+                NetQuantity = x.NetQuantity,
+                GrossAmount = x.GrossAmount,
+                NetAmount = x.NetAmount,
+            }).ToList()
         };
         await _context.Sales.AddAsync(sales);
         await _context.SaveChangesAsync();

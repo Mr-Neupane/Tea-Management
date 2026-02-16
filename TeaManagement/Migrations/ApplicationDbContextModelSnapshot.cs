@@ -697,6 +697,10 @@ namespace TeaManagement.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("numeric")
+                        .HasColumnName("amount");
+
                     b.Property<string>("BillNo")
                         .HasColumnType("text")
                         .HasColumnName("bill_no");
@@ -704,22 +708,6 @@ namespace TeaManagement.Migrations
                     b.Property<int>("FactoryId")
                         .HasColumnType("integer")
                         .HasColumnName("factory_id");
-
-                    b.Property<decimal>("NetQuantity")
-                        .HasColumnType("numeric")
-                        .HasColumnName("net_quantity");
-
-                    b.Property<decimal>("Price")
-                        .HasColumnType("numeric")
-                        .HasColumnName("price");
-
-                    b.Property<int>("ProductId")
-                        .HasColumnType("integer")
-                        .HasColumnName("product_id");
-
-                    b.Property<decimal>("Quantity")
-                        .HasColumnType("numeric")
-                        .HasColumnName("quantity");
 
                     b.Property<int>("RecById")
                         .HasColumnType("integer")
@@ -742,9 +730,9 @@ namespace TeaManagement.Migrations
                         .HasColumnType("integer")
                         .HasColumnName("status");
 
-                    b.Property<decimal>("WaterQuantity")
-                        .HasColumnType("numeric")
-                        .HasColumnName("water_quantity");
+                    b.Property<DateTime>("TxnDate")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("txn_date");
 
                     b.HasKey("Id")
                         .HasName("pk_sales");
@@ -752,10 +740,80 @@ namespace TeaManagement.Migrations
                     b.HasIndex("FactoryId")
                         .HasDatabaseName("ix_sales_factory_id");
 
-                    b.HasIndex("ProductId")
-                        .HasDatabaseName("ix_sales_product_id");
-
                     b.ToTable("sales", "inventory");
+                });
+
+            modelBuilder.Entity("TeaManagement.Entities.SaleDetails", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<decimal>("GrossAmount")
+                        .HasColumnType("numeric")
+                        .HasColumnName("gross_amount");
+
+                    b.Property<decimal>("NetAmount")
+                        .HasColumnType("numeric")
+                        .HasColumnName("net_amount");
+
+                    b.Property<decimal>("NetQuantity")
+                        .HasColumnType("numeric")
+                        .HasColumnName("net_quantity");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("integer")
+                        .HasColumnName("product_id");
+
+                    b.Property<decimal>("Quantity")
+                        .HasColumnType("numeric")
+                        .HasColumnName("quantity");
+
+                    b.Property<decimal>("Rate")
+                        .HasColumnType("numeric")
+                        .HasColumnName("rate");
+
+                    b.Property<int>("RecById")
+                        .HasColumnType("integer")
+                        .HasColumnName("rec_by_id");
+
+                    b.Property<DateTime>("RecDate")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("rec_date");
+
+                    b.Property<char>("RecStatus")
+                        .HasColumnType("character(1)")
+                        .HasColumnName("rec_status");
+
+                    b.Property<int>("SaleId")
+                        .HasColumnType("integer")
+                        .HasColumnName("sale_id");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("integer")
+                        .HasColumnName("status");
+
+                    b.Property<int>("UnitId")
+                        .HasColumnType("integer")
+                        .HasColumnName("unit_id");
+
+                    b.Property<decimal>("WaterQuantity")
+                        .HasColumnType("numeric")
+                        .HasColumnName("water_quantity");
+
+                    b.HasKey("Id")
+                        .HasName("pk_sale_details");
+
+                    b.HasIndex("ProductId")
+                        .HasDatabaseName("ix_sale_details_product_id");
+
+                    b.HasIndex("SaleId")
+                        .HasDatabaseName("ix_sale_details_sale_id");
+
+                    b.ToTable("sale_details", "inventory");
                 });
 
             modelBuilder.Entity("TeaManagement.Entities.Stakeholder", b =>
@@ -1060,16 +1118,28 @@ namespace TeaManagement.Migrations
                         .IsRequired()
                         .HasConstraintName("fk_sales_factory_factory_id");
 
+                    b.Navigation("Factory");
+                });
+
+            modelBuilder.Entity("TeaManagement.Entities.SaleDetails", b =>
+                {
                     b.HasOne("TeaManagement.Entities.Product", "Product")
                         .WithMany()
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
-                        .HasConstraintName("fk_sales_product_product_id");
+                        .HasConstraintName("fk_sale_details_product_product_id");
 
-                    b.Navigation("Factory");
+                    b.HasOne("TeaManagement.Entities.Sale", "Sale")
+                        .WithMany("SalesDetails")
+                        .HasForeignKey("SaleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_sale_details_sales_sale_id");
 
                     b.Navigation("Product");
+
+                    b.Navigation("Sale");
                 });
 
             modelBuilder.Entity("TeaManagement.Entities.Stakeholder", b =>
@@ -1113,6 +1183,11 @@ namespace TeaManagement.Migrations
             modelBuilder.Entity("TeaManagement.Entities.Purchase", b =>
                 {
                     b.Navigation("PurchaseDetails");
+                });
+
+            modelBuilder.Entity("TeaManagement.Entities.Sale", b =>
+                {
+                    b.Navigation("SalesDetails");
                 });
 #pragma warning restore 612, 618
         }

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NToastNotify;
 using TeaManagement.Dtos;
@@ -82,5 +79,22 @@ public class FactoryController : Controller
     {
         var report = await _reportRepository.GetFactoryReportAsync(null);
         return View(report);
+    }
+
+
+    public async Task<RedirectToActionResult> DeactivateFactory(int factoryId)
+    {
+        try
+        {
+            await _factoryManager.DeactivateFactory(factoryId);
+            
+            _toastNotification.AddSuccessToastMessage("Factory deactivated successfully");
+            return RedirectToAction("FactoryReport");
+        }
+        catch (Exception e)
+        {
+            _toastNotification.AddErrorToastMessage(e.Message);
+            return RedirectToAction("FactoryReport");
+        }
     }
 }

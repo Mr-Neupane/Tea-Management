@@ -1,8 +1,8 @@
-﻿using System;
-using System.Threading.Tasks;
-using TeaManagement.Dtos;
+﻿using TeaManagement.Dtos;
 using TeaManagement.Entities;
+using TeaManagement.Enums;
 using TeaManagement.Interface;
+using TeaManagement.Providers;
 
 
 namespace TeaManagement.Services
@@ -10,10 +10,12 @@ namespace TeaManagement.Services
     public class FactoryService : IFactoryService
     {
         private readonly ApplicationDbContext _context;
+        private readonly IdProvider  _idProvider;
 
-        public FactoryService(ApplicationDbContext context)
+        public FactoryService(ApplicationDbContext context, IdProvider idProvider)
         {
             _context = context;
+            _idProvider = idProvider;
         }
 
         public async Task<NewFactory> GetFactoryByIdAsync(int id)
@@ -25,6 +27,20 @@ namespace TeaManagement.Services
             }
 
             return factory;
+        }
+
+        public async Task DeactivateFactoryAsync(int factoryId)
+        {
+            var fac = await _context.Factories.FindAsync(factoryId);
+            if (fac == null)
+            {
+                throw new Exception($"Internal server error.");
+            }
+            else
+            {
+                fac.Status = (int)Status.Inactive;
+                await _context.SaveChangesAsync();
+            }
         }
 
         public async Task<NewFactory> AddFactoryAsync(NewFactoryDto dto)

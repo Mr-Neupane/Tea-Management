@@ -1,0 +1,68 @@
+@using TeaManagement.Enums
+@model List<TeaManagement.Dtos.FactoryReportDto>
+
+@{
+    ViewData["Title"] = "Factory Report";
+}
+
+<div class="container mt-5 ">
+    <div class="card shadow row justify-content-center ">
+        <div class="scrollable">
+
+            <table class="table table-bordered table-striped ">
+                <thead style="position: sticky; background: #fff; z-index: 10;   top: 0;">
+                <tr>
+                    <th width="50px">SN</th>
+                    <th>Factory Name</th>
+                    <th width="125px">Factory Contact No</th>
+                    <th width="125px">Factory Adderss</th>
+                    <th width="100px">Factory Country</th>
+                    <th width="100px">Status</th>
+                    <th width="100px">Action</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                @{
+                    int sn = 1;
+                }
+                @foreach (var f in Model)
+                {
+                    <tr>
+                        <td>@sn</td>
+                        <td>@f.FactoryName</td>
+                        <td>@f.ContactNo</td>
+                        <td>@f.FactoryAddress</td>
+                        <td>@f.FactoryCountry</td>
+                        @if (f.Status == (int)Status.Active)
+                            {
+                                <td class="text-success">Active   </td> 
+                            }
+                        else
+                        {
+                            <td class="text-danger">Inactive   </td> 
+                        }
+                        <td>
+                           @if (f.Status == (int)Status.Active)
+                           {
+                               <a asp-route-FactoryId="@f.Id" asp-action="DeactivateFactory">
+                                   <button class="btn btn-danger btn-sm"
+                                           onclick="return confirm('Are you sure')">Deactivate</button>
+                               </a>
+                           }
+                           else
+                           {
+                               <a class="btn disabled-link btn-secondary btn-sm"
+                                       >No Action</a>
+                           }
+                        </td>
+                    </tr>
+                    sn++;
+                }
+                </tbody>
+
+
+            </table>
+        </div>
+    </div>
+</div>

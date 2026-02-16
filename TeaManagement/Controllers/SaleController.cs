@@ -46,21 +46,28 @@ public class SaleController : Controller
         try
         {
             var saleDetails = vm.SalesDetails.Where(x => x.ProductId != 0).ToList();
-            // var dto = new SalesDto
-            // {
-            //     ProductId = vm.ProductId,
-            //     TxnDate = vm.TxnDate,
-            //     Quantity = vm.Quantity,
-            //     Price = vm.Price,
-            //     BillNo = vm.BillNo,
-            //     WaterQuantity = vm.WaterQuantity,
-            //     SalesAmount = Math.Round((vm.Quantity - vm.WaterQuantity) * vm.Price, 2),
-            //     FactoryId = vm.FactoryId
-            // };
+            var dto = new SalesDto
+            {
+                FactoryId = vm.FactoryId,
+                TxnDate = vm.TxnDate,
+                BillNo = vm.BillNo,
+                NetAmount = vm.Amount,
+                Details = saleDetails.Select(x => new SalesDetailsDto
+                {
+                    ProductId = x.ProductId,
+                    UnitId = x.UnitId,
+                    Quantity = x.Quantity,
+                    Rate = x.Price,
+                    WaterQuantity = x.WaterQuantity,
+                    NetQuantity = x.Quantity - x.WaterQuantity,
+                    GrossAmount = x.Quantity * x.Price,
+                    NetAmount = (x.Quantity - x.WaterQuantity) * x.Price,
+                }).ToList()
+            };
 
-            // await _salesTransactionManager.AddSales(dto);
+            await _salesTransactionManager.AddSales(dto);
             _toastNotification.AddSuccessToastMessage("Sales added successfully");
-            return View();
+            return RedirectToAction("NewSale");
         }
         catch (Exception e)
         {

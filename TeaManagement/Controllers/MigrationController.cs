@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NToastNotify;
+using TeaManagement.Constraints;
 using TeaManagement.Entities;
 
 namespace TeaManagement.Controllers;
@@ -68,7 +69,7 @@ public class MigrationController : Controller
                 {
                     new()
                     {
-                        Id = -1,
+                        Id = ParentLedgerIdConstraints.CashAccount,
                         Name = "Cash Account",
                         Code = "80",
                         ParentId = -1,
@@ -76,7 +77,7 @@ public class MigrationController : Controller
                     },
                     new()
                     {
-                        Id = -2,
+                        Id = ParentLedgerIdConstraints.BankAccount,
                         Name = "Bank Account",
                         Code = "90",
                         ParentId = -1,
@@ -84,7 +85,7 @@ public class MigrationController : Controller
                     },
                     new()
                     {
-                        Id = -8,
+                        Id = ParentLedgerIdConstraints.Debtors,
                         Name = "Stakeholder/Factory Account",
                         Code = "120",
                         ParentId = -1,
@@ -92,7 +93,7 @@ public class MigrationController : Controller
                     },
                     new()
                     {
-                        Id = -3,
+                        Id = ParentLedgerIdConstraints.OtherIncome,
                         Name = "Other Income",
                         Code = "160.2",
                         ParentId = -3,
@@ -100,7 +101,7 @@ public class MigrationController : Controller
                     },
                     new()
                     {
-                        Id = -12,
+                        Id = ParentLedgerIdConstraints.SamanBikriAccount,
                         Name = "Saman Bikri Account",
                         Code = "160.1",
                         ParentId = -3,
@@ -108,7 +109,7 @@ public class MigrationController : Controller
                     },
                     new()
                     {
-                        Id = -13,
+                        Id = LedgerIdConstraints.Sales,
                         Name = "Stock Sales",
                         Code = "160.1.1",
                         ParentId = null,
@@ -116,7 +117,7 @@ public class MigrationController : Controller
                     },
                     new()
                     {
-                        Id = -4,
+                        Id = ParentLedgerIdConstraints.OtherExpenses,
                         Name = "Other Expenses",
                         Code = "150.2",
                         ParentId = -4,
@@ -124,7 +125,7 @@ public class MigrationController : Controller
                     },
                     new()
                     {
-                        Id = -10,
+                        Id = ParentLedgerIdConstraints.SamanKharidAccount,
                         Name = "Saman Kharid",
                         Code = "150.1",
                         ParentId = -4,
@@ -132,7 +133,7 @@ public class MigrationController : Controller
                     },
                     new()
                     {
-                        Id = -11,
+                        Id = LedgerIdConstraints.Purchase,
                         Name = "Stock Purchase",
                         Code = "150.1.1",
                         ParentId = null,
@@ -140,7 +141,7 @@ public class MigrationController : Controller
                     },
                     new()
                     {
-                        Id = -5,
+                        Id = ParentLedgerIdConstraints.CurrentLiabilities,
                         Name = "Current Liabilities",
                         Code = "60",
                         ParentId = -2,
@@ -148,7 +149,7 @@ public class MigrationController : Controller
                     },
                     new()
                     {
-                        Id = -6,
+                        Id = ParentLedgerIdConstraints.OtherLiabilities,
                         Name = "Other Liabilities",
                         Code = "70",
                         ParentId = -2,
@@ -156,7 +157,7 @@ public class MigrationController : Controller
                     },
                     new()
                     {
-                        Id = -7,
+                        Id = LedgerIdConstraints.Cash,
                         Name = "Cash",
                         Code = "80.1",
                         ParentId = null,
@@ -164,7 +165,7 @@ public class MigrationController : Controller
                     },
                     new()
                     {
-                        Id = -15,
+                        Id = ParentLedgerIdConstraints.Creditors,
                         Name = "Creditors",
                         Code = "50",
                         ParentId = -2,
@@ -188,6 +189,19 @@ public class MigrationController : Controller
                 await _context.SaveChangesAsync();
             }
 
+            var existingUnit = await _context.ProductUnits.Where(x => x.Id == -1).FirstOrDefaultAsync();
+            if (existingUnit == null)
+            {
+                var unit = new ProductUnit
+                {
+                    Id = -1,
+                    UnitName = "KG",
+                    UnitDescription = "Kilogram"
+                };
+                await _context.ProductUnits.AddAsync(unit);
+                await _context.SaveChangesAsync();
+            }
+
             var existingProd = await _context.Products.Where(x => x.Id == -1).FirstOrDefaultAsync();
             if (existingProd == null)
             {
@@ -202,18 +216,6 @@ public class MigrationController : Controller
                 await _context.SaveChangesAsync();
             }
 
-            var existingUnit = await _context.ProductUnits.Where(x => x.Id == -1).FirstOrDefaultAsync();
-            if (existingUnit == null)
-            {
-                var unit = new ProductUnit
-                {
-                    Id = -1,
-                    UnitName = "KG",
-                    UnitDescription = "Kilogram"
-                };
-                await _context.ProductUnits.AddAsync(unit);
-                await _context.SaveChangesAsync();
-            }
 
             var existingClass = await _context.TeaClass.Where(x => x.Id == -1).FirstOrDefaultAsync();
             if (existingClass == null)
