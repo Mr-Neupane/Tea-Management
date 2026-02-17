@@ -17,6 +17,8 @@
     href="https://cdn.jsdelivr.net/npm/admin-lte@4.0.0-rc3/dist/css/adminlte.min.css"
     crossorigin="anonymous"
   />
+  <link href="https://nepalidatepicker.sajanmaharjan.com.np/v5/nepali.datepicker/css/nepali.datepicker.v5.0.6.min.css"
+        rel="stylesheet" type="text/css"/>
 
   <!--begin::Accessibility Meta Tags-->
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes"/>
@@ -135,9 +137,11 @@
                 <a class="dropdown-item dropdown-toggle" href="#">Factory</a>
                 <ul class="dropdown-menu">
                   <li><a class="dropdown-item" asp-controller="Factory" asp-action="NewFactory">Add Factory</a></li>
-                  <li><a class="dropdown-item" asp-controller="Factory" asp-action="FactoryReport">Factory Report</a></li>
+                  <li><a class="dropdown-item" asp-controller="Factory" asp-action="FactoryReport">Factory Report</a>
+                  </li>
                 </ul>
-              </li> <li class="dropdown-submenu">
+              </li>
+              <li class="dropdown-submenu">
                 <a class="dropdown-item dropdown-toggle" href="#">Bank</a>
                 <ul class="dropdown-menu">
                   <li><a class="dropdown-item" asp-controller="Bank" asp-action="CreateBank">Create Bank</a></li>
@@ -746,8 +750,40 @@
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 
 <script src="/js/amountCalculation.js"></script>
+<script src="https://nepalidatepicker.sajanmaharjan.com.np/v5/nepali.datepicker/js/nepali.datepicker.v5.0.6.min.js"
+        type="text/javascript"></script>
+<script
+  src="https://nepalidatepicker.sajanmaharjan.com.np/v5/nepali.datepicker/js/nepali.datepicker.v5.0.6.min.js"></script>
+<script src="https://nepalifunctions.sajanmaharjan.com.np/nepaliFunctions.min.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    let input = document.getElementById("date");
+    let bsDefault = NepaliFunctions.AD2BS(new Date(), "YYYY-MM-DD", "YYYY/MM/DD");
 
+    if (input) {
+      input.NepaliDatePicker({
+        language: "english",
+        dateFormat: "YYYY/MM/DD",
+        animation: "slide",
+        disableDaysAfter: 0,
+        value: bsDefault
+      });
 
+    }
+
+  });
+
+</script>
+
+<script>
+  document.getElementById("form").addEventListener("submit", e => {
+    // e.preventDefault();
+    let nepDate = document.getElementById("date").value;
+    let engDate = NepaliFunctions.BS2AD(nepDate, "YYYY/MM/DD", "YYYY-MM-DD");
+    document.getElementById("date").value=engDate;
+  })
+
+</script>
 
 @await RenderSectionAsync("Scripts", required: false)
 @await Component.InvokeAsync("NToastNotify")

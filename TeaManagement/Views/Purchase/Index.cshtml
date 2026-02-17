@@ -4,7 +4,7 @@
     ViewData["Title"] = "Add Purchase";
 }
 
-<form method="post" asp-action="AddPurchase">
+<form method="post" id="form" asp-action="AddPurchase">
     <div class="container mt-4">
         <div class="card shadow border-0">
             <div class="card-header ">
@@ -14,8 +14,8 @@
                 <div class="row g-3">
 
                     <div class="col-md-4 w-auto">
-                        <label class="form-label ">Date</label>
-                        <input class="form-control " type="text"/>
+                        <label class="form-label " asp-for="TxnDate">Date</label>
+                        <input class="form-control date-input " asp-for="TxnDate" id="date" type="text"/>
                     </div>
 
                     <div class="col-md-4">
