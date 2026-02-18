@@ -36,24 +36,28 @@ public class StakeholderController : Controller
     {
         try
         {
-            var existing = await _context.Stakeholders.Select(x => x.FullName == vm.FullName.Trim())
-                .FirstOrDefaultAsync();
-            if (existing)
+            var existing = _context.Stakeholders.FirstOrDefault(x => x.FullName == vm.FullName.Trim());
+
+            if (existing != null)
             {
                 _toastNotification.AddErrorToastMessage("Supplier with the same name already exists.");
                 return View(vm);
             }
-
-            var dto = new StakeholderDto
+            else
             {
-                FullName = vm.FullName,
-                IsSupplier = true,
-                Email = vm.Email,
-                PhoneNumber = vm.ContactNumber,
-                Address = vm.Address,
-            };
-            await _stakeholderManager.RecordStakeholder(dto);
-            _toastNotification.AddSuccessToastMessage("Supplier added successfully.");
+                var dto = new StakeholderDto
+                {
+                    FullName = vm.FullName,
+                    IsSupplier = true,
+                    Email = vm.Email,
+                    PhoneNumber = vm.ContactNumber,
+                    Address = vm.Address,
+                };
+                await _stakeholderManager.RecordStakeholder(dto);
+                _toastNotification.AddSuccessToastMessage("Supplier added successfully.");
+            }
+
+
             return View();
         }
         catch (Exception e)
@@ -79,16 +83,26 @@ public class StakeholderController : Controller
     {
         try
         {
-            var dto = new StakeholderDto
+            var exising = _context.Stakeholders.FirstOrDefault(x => x.FullName == vm.FullName.Trim());
+            if (exising != null)
             {
-                FullName = vm.FullName,
-                IsSupplier = false,
-                Email = vm.Email,
-                PhoneNumber = vm.ContactNumber,
-                Address = vm.Address,
-            };
-            await _stakeholderManager.RecordStakeholder(dto);
-            _toastNotification.AddSuccessToastMessage("Customer added successfully.");
+                _toastNotification.AddErrorToastMessage("Customer with the same name already exists.");
+            }
+            else
+            {
+                var dto = new StakeholderDto
+                {
+                    FullName = vm.FullName,
+                    IsSupplier = false,
+                    Email = vm.Email,
+                    PhoneNumber = vm.ContactNumber,
+                    Address = vm.Address,
+                };
+                await _stakeholderManager.RecordStakeholder(dto);
+                _toastNotification.AddSuccessToastMessage("Customer added successfully.");
+            }
+
+
             return View();
         }
         catch (Exception e)

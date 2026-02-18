@@ -11,7 +11,7 @@
         border: 1px solid #ccc;
     }
 </style>
-<form method="post" asp-action="NewSale">
+<form method="post" id="form" asp-action="NewSale">
     <div class="container mt-4">
         <div class="card shadow border-0">
             <div class="card-header ">
@@ -21,8 +21,8 @@
                 <div class="row g-3">
 
                     <div class="col-md-4 w-auto">
-                        <label class="form-label ">Date</label>
-                        <input class="form-control " id="date" type="text"/>
+                        <label class="form-label " asp-for="TxnDate">Date</label>
+                        <input class="form-control" asp-for="TxnDate" id="date" type="text"/>
                     </div>
 
                     <div class="col-md-4">

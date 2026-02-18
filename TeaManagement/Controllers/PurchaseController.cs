@@ -40,25 +40,33 @@ public class PurchaseController : Controller
         {
             var actDtl = vm.PurchaseDetails.Where(x => x.ProductId != 0).ToList();
 
-            var dto = new PurchaseDto
+            if (actDtl.Count>0)
             {
-                SupplierId = vm.StakeholderId,
-                BillNo = vm.BillNo,
-                GrossAmount = vm.Amount,
-                Discount = 0,
-                NetAmount = vm.Amount,
-                TxnDate = vm.TxnDate,
-                Details = actDtl.Select(x => new PurchaseDetailsDto
+                var dto = new PurchaseDto
                 {
-                    ProductId = x.ProductId,
-                    UnitId = x.UnitId,
-                    Quantity = x.Quantity,
-                    Rate = x.Rate,
-                    Discount = 0
-                }).ToList()
-            };
-            await _purchaseManager.AddPurchase(dto);
-            _toastNotification.AddSuccessToastMessage("Purchase added successfully.");
+                    SupplierId = vm.StakeholderId,
+                    BillNo = vm.BillNo,
+                    GrossAmount = vm.Amount,
+                    Discount = 0,
+                    NetAmount = vm.Amount,
+                    TxnDate = vm.TxnDate,
+                    Details = actDtl.Select(x => new PurchaseDetailsDto
+                    {
+                        ProductId = x.ProductId,
+                        UnitId = x.UnitId,
+                        Quantity = x.Quantity,
+                        Rate = x.Rate,
+                        Discount = 0
+                    }).ToList()
+                };
+                await _purchaseManager.AddPurchase(dto);
+                _toastNotification.AddSuccessToastMessage("Purchase added successfully.");
+            }
+            else
+            {
+                _toastNotification.AddAlertToastMessage("Please add product first");
+            }
+           
             return RedirectToAction("Index");
         }
         catch (Exception e)
