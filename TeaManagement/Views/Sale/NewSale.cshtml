@@ -11,18 +11,18 @@
         border: 1px solid #ccc;
     }
 </style>
-<form method="post" asp-action="NewSale">
+<form method="post" id="form" asp-action="NewSale">
     <div class="container mt-4">
         <div class="card shadow border-0">
             <div class="card-header ">
-                <h6 class="mb-3 fw-semibold">Additional Purchase Details</h6>
+                <h6 class="mb-3 fw-semibold">Additional Sales Details</h6>
             </div>
             <div class="card-body">
                 <div class="row g-3">
 
                     <div class="col-md-4 w-auto">
-                        <label class="form-label ">Date</label>
-                        <input class="form-control " type="text"/>
+                        <label class="form-label " asp-for="TxnDate">Date</label>
+                        <input class="form-control" asp-for="TxnDate" id="date" type="text"/>
                     </div>
 
                     <div class="col-md-4">

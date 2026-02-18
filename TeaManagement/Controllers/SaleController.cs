@@ -1,10 +1,7 @@
-﻿using System;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using NToastNotify;
 using TeaManagement.Dtos;
-using TeaManagement.Interface;
 using TeaManagement.Manager;
 using TeaManagement.Providers;
 using TeaManagement.ViewModels;
@@ -46,27 +43,36 @@ public class SaleController : Controller
         try
         {
             var saleDetails = vm.SalesDetails.Where(x => x.ProductId != 0).ToList();
-            var dto = new SalesDto
-            {
-                FactoryId = vm.FactoryId,
-                TxnDate = vm.TxnDate,
-                BillNo = vm.BillNo,
-                NetAmount = vm.Amount,
-                Details = saleDetails.Select(x => new SalesDetailsDto
-                {
-                    ProductId = x.ProductId,
-                    UnitId = x.UnitId,
-                    Quantity = x.Quantity,
-                    Rate = x.Price,
-                    WaterQuantity = x.WaterQuantity,
-                    NetQuantity = x.Quantity - x.WaterQuantity,
-                    GrossAmount = x.Quantity * x.Price,
-                    NetAmount = (x.Quantity - x.WaterQuantity) * x.Price,
-                }).ToList()
-            };
 
-            await _salesTransactionManager.AddSales(dto);
-            _toastNotification.AddSuccessToastMessage("Sales added successfully");
+            if (saleDetails.Count > 0)
+            {
+                var dto = new SalesDto
+                {
+                    FactoryId = vm.FactoryId,
+                    TxnDate = vm.TxnDate,
+                    BillNo = vm.BillNo,
+                    NetAmount = vm.Amount,
+                    Details = saleDetails.Select(x => new SalesDetailsDto
+                    {
+                        ProductId = x.ProductId,
+                        UnitId = x.UnitId,
+                        Quantity = x.Quantity,
+                        Rate = x.Price,
+                        WaterQuantity = x.WaterQuantity,
+                        NetQuantity = x.Quantity - x.WaterQuantity,
+                        GrossAmount = x.Quantity * x.Price,
+                        NetAmount = (x.Quantity - x.WaterQuantity) * x.Price,
+                    }).ToList()
+                };
+
+                await _salesTransactionManager.AddSales(dto);
+                _toastNotification.AddSuccessToastMessage("Sales added successfully");
+            }
+            else
+            {
+                _toastNotification.AddAlertToastMessage("Please add product for sales");
+            }
+            
             return RedirectToAction("NewSale");
         }
         catch (Exception e)

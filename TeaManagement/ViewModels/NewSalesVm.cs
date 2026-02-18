@@ -4,7 +4,7 @@ namespace TeaManagement.ViewModels;
 
 public class NewSalesVm
 {
-    public DateTime TxnDate { get; set; } = DateTime.Now.ToUniversalTime();
+    public DateTime TxnDate { get; set; } =DateTime.Now.ToUniversalTime();
     public int FactoryId { get; set; }
     public string BillNo { get; set; }
     public decimal Amount { get; set; }
