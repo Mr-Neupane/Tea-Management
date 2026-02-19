@@ -2,8 +2,8 @@
 using TeaManagement.Constraints;
 using TeaManagement.Dtos;
 using TeaManagement.Entities;
-using TeaManagement.Enums;
 using TeaManagement.Interface;
+using TeaManagement.Services.Interface;
 
 namespace TeaManagement.Manager;
 
@@ -45,5 +45,11 @@ public class StakeholderManager
             scope.Complete();
             return ledger;
         }
+    }
+
+    public async Task DeactivateStakeholder(int stakeholderId, int ledgerId)
+    {
+        await _stakeholderService.DeactivateStakeholderAsync(stakeholderId);
+        await _ledgerService.DeactivateLedgerAsync(ledgerId);
     }
 }

@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using NToastNotify;
 using TeaManagement.Dtos;
+using TeaManagement.Entities;
 using TeaManagement.Interface;
 using TeaManagement.Manager;
 using TeaManagement.Repository.Interface;
@@ -117,5 +118,28 @@ public class StakeholderController : Controller
     {
         var report = await _reportRepository.GetStakeholderReportAsync(false, status);
         return View(report);
+    }
+
+    public async Task<IActionResult> DeactivateStakeholder(int stakeholderId, bool isSupplier)
+    {
+        try
+        {
+            var stakeholder = await _context.Stakeholders.FindAsync(stakeholderId);
+            if (stakeholder != null)
+            {
+                await _stakeholderManager.DeactivateStakeholder(stakeholder.Id, stakeholder.LedgerId);
+                _toastNotification.AddSuccessToastMessage("Stakeholder Deactivated Successfully.");
+                return RedirectToAction(isSupplier ? "SupplierReport" : "CustomerReport");
+            }
+            else
+            {
+                throw new Exception("Stakeholder not found.");
+            }
+        }
+        catch (Exception e)
+        {
+            _toastNotification.AddErrorToastMessage(e.Message);
+            return RedirectToAction(isSupplier ? "SupplierReport" : "CustomerReport");
+        }
     }
 }

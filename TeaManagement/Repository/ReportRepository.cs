@@ -26,7 +26,8 @@ public class ReportRepository : IReportRepository
                     ProductName = p.Name,
                     UnitName = u.UnitName,
                     CategoryName = c.Name,
-                    Rate = p.Price
+                    Rate = p.Price,
+                    Status = p.Status,
                 })
             .ToListAsync();
         return products;
@@ -53,6 +54,7 @@ public class ReportRepository : IReportRepository
                 join c in _context.ChartOfAccounts on pl.ParentId equals c.Id
                 select new LedgerReportDto
                 {
+                    LedgerId = l.Id,
                     LedgerName = l.Name,
                     SubParentLedger = pl.Name,
                     CoaLegderName = c.Name,
@@ -76,7 +78,9 @@ public class ReportRepository : IReportRepository
                     Email = x.Email,
                     PanNo = 0,
                     ContactNo = x.PhoneNumber,
-                    Address = x.Address
+                    Address = x.Address,
+                    IsSupplier = x.StakeholderType == (int)StakeholderType.Supplier,
+                    Status = x.Status
                 }).ToListAsync();
             return res;
         }
@@ -91,7 +95,9 @@ public class ReportRepository : IReportRepository
                     Email = x.Email,
                     PanNo = 0,
                     ContactNo = x.PhoneNumber,
-                    Address = x.Address
+                    Address = x.Address,
+                    IsSupplier = x.StakeholderType == (int)StakeholderType.Supplier,
+                    Status = x.Status
                 }).ToListAsync();
             return res;
         }
