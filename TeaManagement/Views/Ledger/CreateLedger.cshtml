@@ -1,1 +1,65 @@
-﻿@model TeaManagement.ViewModels.AddLegderVm;
+﻿@model TeaManagement.ViewModels.AddLegderVm
+
+@{
+    ViewData["Title"] = "Add Ledger";
+}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">   <!-- Controls card width -->
+            <div class="card shadow-sm">
+                <div class="card-header text-center">
+                    <h5 class="mb-0">Add Customer</h5>
+                </div>
+
+                <div class="card-body">
+                    <form method="post" asp-action="CreateLedger">
+                        <div class="mb-3">
+                            <label>Parent Ledger <span class="text-danger">*</span></label>
+                            <select asp-for="SubParentId" asp-items="Model.SubParentIds" class="form-control"
+                                    required="required" id="parentId">
+                                <option>Select Parent Ledger</option>
+                            </select>
+
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="LedgerCode">Ledger Code</label>
+                            <input asp-for="LedgerCode" type="text" id="code" readonly="readonly" 
+                                   class="form-control"/>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="LedgerName">Ledger Name</label>
+                            <input asp-for="LedgerName" type="text" autocomplete="off"
+                                   class="form-control"/>
+                        </div>
+
+                        <div>
+                            <button type="submit" onclick="return confirm('Do you want to add ledger')"
+                                    class="btn btn-primary ">Save
+                            </button>
+                            <button type="reset" class="btn btn-danger">Reset</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script>
+
+    $(document).on('change', '#parentId', function () {
+        let parentId = $(this).val();
+        let lCode = document.getElementById('code');
+        $.ajax({
+            url: '@Url.Action("GetLedgerCode", "LedgerCodeProvider")',
+            method: "get",
+            data: {parentId},
+            success: data => {
+                if (data) {
+                    lCode.value= data
+                }
+            }
+        });
+    });
+</script>

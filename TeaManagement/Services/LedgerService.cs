@@ -1,5 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using TeaManagement.Dtos;
+﻿using TeaManagement.Dtos;
 using TeaManagement.Entities;
 using TeaManagement.Interface;
 

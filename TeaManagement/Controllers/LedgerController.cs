@@ -73,7 +73,7 @@ public class LedgerController : Controller
                 IsParent = false
             };
             await _ledgerService.AddLedgerAsync(dto);
-            _toastNotification.AddSuccessToastMessage($"{vm.LedgerName} created successfully.");
+            _toastNotification.AddSuccessToastMessage($"{vm.LedgerName} ledger created successfully.");
             return RedirectToAction("LedgerReport");
         }
         else
