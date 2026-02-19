@@ -1,9 +1,8 @@
-﻿
-@using TeaManagement.Enums
-@model List<TeaManagement.Dtos.StakeholderReportDto>
+﻿@using TeaManagement.Enums
+@model List<TeaManagement.Dtos.ProductReportDto>
 
 @{
-    ViewData["Title"] = "Customer Report";
+    ViewData["Title"] = "Product Report";
 }
 
 <div class="container mt-5 ">
@@ -14,11 +13,10 @@
                 <thead style="position: sticky; background: #fff; z-index: 10;   top: 0;">
                 <tr>
                     <th width="50px">SN</th>
-                    <th>Customer Name</th>
-                    <th width="200px"> Address</th>
-                    <th > Email</th>
-                    <th width="150px"> Pan No</th>
-                    <th width="150px"> Contact No</th>
+                    <th>Product Name</th>
+                    <th width="125px">Unit Name</th>
+                    <th width="150px">Category Name</th>
+                    <th width="150px">Product Rate</th>
                     <th width="100px">Status</th>
                     <th width="100px">Action</th>
                 </tr>
@@ -28,16 +26,15 @@
                 @{
                     int sn = 1;
                 }
-                @foreach (var f in Model)
+                @foreach (var p in Model)
                 {
                     <tr>
                         <td>@sn</td>
-                        <td>@f.StakeholderName</td>
-                        <td>@f.Address</td>
-                        <td>@f.Email</td>
-                        <td>@f.PanNo</td>
-                        <td>@f.ContactNo</td>
-                        @if (f.Status == (int)Status.Active)
+                        <td>@p.ProductName</td>
+                        <td>@p.UnitName</td>
+                        <td>@p.CategoryName</td>
+                        <td>@p.Rate</td>
+                        @if (p.Status == (int)Status.Active)
                         {
                             <td class="text-success">Active</td>
                         }
@@ -46,10 +43,9 @@
                             <td class="text-danger">Inactive</td>
                         }
                         <td>
-                            @if (f.Status == (int)Status.Active)
+                            @if (p.Status == (int)Status.Active)
                             {
-                                <a asp-route-isSupplier="@f.IsSupplier" asp-route-stakeholderId="@f.StakeholderId"
-                                   asp-action="DeactivateStakeholder">
+                                <a asp-route-FactoryId="@p.ProductId" asp-action="DectivateProduct">
                                     <button class="btn btn-danger btn-sm"
                                             onclick="return confirm('Are you sure')">Deactivate
                                     </button>

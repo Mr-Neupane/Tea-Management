@@ -7,4 +7,5 @@ public class ProductReportDto
     public string UnitName { get; set; }
     public string CategoryName { get; set; }
     public decimal Rate { get; set; }
+    public int Status { get; set; }
 }

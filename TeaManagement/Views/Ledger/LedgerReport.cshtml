@@ -1,1 +1,69 @@
-﻿@model List<TeaManagement.Dtos.LedgerReportDto>;
+﻿@using TeaManagement.Enums
+@model List<TeaManagement.Dtos.LedgerReportDto>
+
+@{
+    ViewData["Title"] = "Product Report";
+}
+
+<div class="container mt-5 ">
+    <div class="card shadow row justify-content-center ">
+        <div class="scrollable">
+
+            <table class="table table-bordered table-striped " >
+                <thead style="position: sticky; background: #fff; z-index: 10;   top: 0;">
+                <tr>
+                    <th width="50px">SN</th>
+                    <th width="100px">COA Name</th>
+                    <th >Parent Ledger Name</th>
+                    <th >Ledger Name</th>
+                    <th width="150px">Ledger Code</th>
+                    <th width="100px">Status</th>
+                    <th width="100px">Action</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                @{
+                    int sn = 1;
+                }
+                @foreach (var p in Model)
+                {
+                    <tr>
+                        <td>@sn</td>
+                        <td>@p.CoaLegderName</td>
+                        <td>@p.SubParentLedger</td>
+                        <td>@p.LedgerName</td>
+                        <td>@p.LedgerCode</td>
+                        @if (p.LedgerStatus == (int)Status.Active)
+                        {
+                            <td class="text-success">Active</td>
+                        }
+                        else
+                        {
+                            <td class="text-danger">Inactive</td>
+                        }
+                        <td>
+                            @if (p.LedgerStatus == (int)Status.Active)
+                            {
+                                <a asp-route-FactoryId="@p.LedgerId" asp-action="DectivateLedger">
+                                    <button class="btn btn-danger btn-sm"
+                                            onclick="return confirm('Are you sure')">Deactivate
+                                    </button>
+                                </a>
+                            }
+                            else
+                            {
+                                <a class="btn disabled-link btn-secondary btn-sm"
+                                >No Action</a>
+                            }
+                        </td>
+                    </tr>
+                    sn++;
+                }
+                </tbody>
+
+
+            </table>
+        </div>
+    </div>
+</div>

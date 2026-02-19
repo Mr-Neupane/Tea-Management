@@ -5,6 +5,7 @@ using TeaManagement.Dtos;
 using TeaManagement.Interface;
 using TeaManagement.Providers;
 using TeaManagement.Repository.Interface;
+using TeaManagement.Services.Interface;
 using TeaManagement.ViewModels;
 
 namespace TeaManagement.Controllers;
@@ -73,7 +74,7 @@ public class LedgerController : Controller
                 IsParent = false
             };
             await _ledgerService.AddLedgerAsync(dto);
-            _toastNotification.AddSuccessToastMessage($"{vm.LedgerName} created successfully.");
+            _toastNotification.AddSuccessToastMessage($"{vm.LedgerName} ledger created successfully.");
             return RedirectToAction("LedgerReport");
         }
         else

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using TeaManagement.Constraints;
 using TeaManagement.Dtos;
 using TeaManagement.Enums;
 
@@ -27,7 +28,10 @@ public class DropdownProvider : Controller
     {
         var parentLedgers = (from l in _context.Ledgers
             join c in _context.ChartOfAccounts on l.ParentId equals c.Id
-            where l.Status == (int)Status.Active
+            where l.Status == (int)Status.Active && l.Id != ParentLedgerIdConstraints.BankAccount &&
+                  l.Id != ParentLedgerIdConstraints.Debtors && l.Id != ParentLedgerIdConstraints.Creditors &&
+                  l.Id != ParentLedgerIdConstraints.SamanBikriAccount &&
+                  l.Id != ParentLedgerIdConstraints.SamanKharidAccount
             select new DropdownListDto()
             {
                 Id = l.Id,
@@ -58,7 +62,7 @@ public class DropdownProvider : Controller
 
     public List<DropdownListDto> GetProductsForPurchase()
     {
-        var prod = _context.Products.Where(x => x.Status == (int)Status.Active ).Select(x =>
+        var prod = _context.Products.Where(x => x.Status == (int)Status.Active).Select(x =>
                 new DropdownListDto
                 {
                     Id = x.Id,

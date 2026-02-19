@@ -2,6 +2,7 @@
 
 public class LedgerReportDto
 {
+    public int LedgerId { get; set; }
     public string LedgerName { get; set; }
     public string SubParentLedger { get; set; }
     public string CoaLegderName { get; set; }
