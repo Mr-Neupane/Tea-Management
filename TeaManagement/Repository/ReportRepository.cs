@@ -125,4 +125,24 @@ public class ReportRepository : IReportRepository
         }).ToListAsync();
         return res;
     }
+
+    public async Task<List<SalesReportDto>> GetSalesListAsync()
+    {
+        var sales = await (from s in _context.Sales
+                join f in _context.Factories on s.FactoryId equals f.Id
+                where s.Status == (int)Status.Active
+                select new SalesReportDto
+                {
+                    Id = s.Id,
+                    SalesDate = s.TxnDate,
+                    SalesNo = s.SaleNo,
+                    BillNo = s.BillNo,
+                    SalesAmount = s.Amount,
+                    FactoryName = f.Name,
+                }
+            ).ToListAsync();
+
+
+        return sales;
+    }
 }
