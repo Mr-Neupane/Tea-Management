@@ -1,0 +1,47 @@
+@using TeaManagement.Enums
+@model List<TeaManagement.Dtos.CategoryReportDto>
+
+@{
+    ViewData["Title"] = "Category Report";
+}
+
+<div class="container mt-5 ">
+    <div class="card shadow row justify-content-center ">
+        <div class="scrollable">
+
+            <table class="table table-bordered table-striped ">
+                <thead style="position: sticky; background: #fff; z-index: 10;   top: 0;">
+                <tr>
+                    <th width="50px">SN</th>
+                    <th >Category Name</th>
+                    <th width="100px">Status</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                @{
+                    int sn = 1;
+                }
+                @foreach (var c in Model)
+                {
+                    <tr>
+                        <td>@sn</td>
+                        <td>@c.Name</td>
+                        @if (c.Status == (int)Status.Active)
+                        {
+                            <td class="text-success">Active</td>
+                        }
+                        else
+                        {
+                            <td class="text-danger">Inactive</td>
+                        }
+                    </tr>
+                    sn++;
+                }
+                </tbody>
+
+
+            </table>
+        </div>
+    </div>
+</div>

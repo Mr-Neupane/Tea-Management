@@ -8,4 +8,6 @@ public interface IReportRepository
     public Task<List<FactoryReportDto>> GetFactoryReportAsync(int? status);
     public Task<List<LedgerReportDto>> LedgerReportAsync();
     public Task<List<StakeholderReportDto>> GetStakeholderReportAsync(bool isSupplier, int? status);
+    public Task<List<UnitReportDto>> GetUnitReportAsync();
+    public Task<List<CategoryReportDto>> GetCategoryReportAsync();
 }

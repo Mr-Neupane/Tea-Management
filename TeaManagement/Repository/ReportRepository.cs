@@ -102,4 +102,27 @@ public class ReportRepository : IReportRepository
             return res;
         }
     }
+
+    public async Task<List<UnitReportDto>> GetUnitReportAsync()
+    {
+        var res = await _context.ProductUnits.Where(x => x.Status == (int)Status.Active).Select(x => new UnitReportDto
+        {
+            Id = x.Id,
+            Name = x.UnitName,
+            Description = x.UnitDescription,
+            Status = x.Status,
+        }).ToListAsync();
+        return res;
+    }
+
+    public async Task<List<CategoryReportDto>> GetCategoryReportAsync()
+    {
+        var res = await _context.Categories.Where(x => x.Status == (int)Status.Active).Select(x => new CategoryReportDto
+        {
+            Id = x.Id,
+            Name = x.Name,
+            Status = x.Status,
+        }).ToListAsync();
+        return res;
+    }
 }
