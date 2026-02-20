@@ -1,0 +1,50 @@
+
+@using TeaManagement.Enums
+@model List<TeaManagement.Dtos.UnitReportDto>
+
+@{
+    ViewData["Title"] = "Unit Report";
+}
+
+<div class="container mt-5 ">
+    <div class="card shadow row justify-content-center ">
+        <div class="scrollable">
+
+            <table class="table table-bordered table-striped ">
+                <thead style="position: sticky; background: #fff; z-index: 10;   top: 0;">
+                <tr>
+                    <th width="50px">SN</th>
+                    <th >Unit Name</th>
+                    <th > Description</th>
+                    <th width="100px">Status</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                @{
+                    int sn = 1;
+                }
+                @foreach (var u in Model)
+                {
+                    <tr>
+                        <td>@sn</td>
+                        <td>@u.Name</td>
+                        <td>@u.Description</td>
+                        @if (u.Status == (int)Status.Active)
+                        {
+                            <td class="text-success">Active</td>
+                        }
+                        else
+                        {
+                            <td class="text-danger">Inactive</td>
+                        }
+                    </tr>
+                    sn++;
+                }
+                </tbody>
+
+
+            </table>
+        </div>
+    </div>
+</div>
