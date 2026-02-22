@@ -19,7 +19,7 @@ public class ReceivableService : IReceivableService
         {
             StakeholderId = dto.StakeholderId,
             Amount = dto.Amount,
-            TxnDate = dto.TxnDate,
+            TxnDate = dto.TxnDate.ToUniversalTime(),
             TransactionId = dto.TransactionId,
         };
         await _context.Receivable.AddAsync(recTxn);

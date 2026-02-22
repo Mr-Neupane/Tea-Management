@@ -14,5 +14,6 @@ namespace TeaManagement.Entities
         public List<SaleDetails> SalesDetails { get; set; }
 
         public virtual NewFactory Factory { get; set; }
+        
     }
 }

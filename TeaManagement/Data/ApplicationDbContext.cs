@@ -14,6 +14,7 @@ public class ApplicationDbContext : DbContext
     public DbSet<Product> Products { get; set; }
     public DbSet<Category> Categories { get; set; }
     public DbSet<Sale> Sales { get; set; }
+    public DbSet<SaleDetails> SaleDetails { get; set; }
     public DbSet<CoaLedger> ChartOfAccounts { get; set; }
     public DbSet<Ledger> Ledgers { get; set; }
     public DbSet<Receivable> Receivable { get; set; }

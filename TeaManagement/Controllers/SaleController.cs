@@ -4,6 +4,7 @@ using NToastNotify;
 using TeaManagement.Dtos;
 using TeaManagement.Manager;
 using TeaManagement.Providers;
+using TeaManagement.Repository.Interface;
 using TeaManagement.ViewModels;
 
 namespace TeaManagement.Controllers;
@@ -13,14 +14,16 @@ public class SaleController : Controller
     private readonly SalesTransactionManager _salesTransactionManager;
     private readonly IToastNotification _toastNotification;
     private readonly DropdownProvider _dropdownProvider;
+    private readonly IReportRepository _reportRepository;
 
 
     public SaleController(SalesTransactionManager salesTransactionManager, IToastNotification toastNotification,
-        DropdownProvider dropdownProvider)
+        DropdownProvider dropdownProvider, IReportRepository reportRepository)
     {
         _salesTransactionManager = salesTransactionManager;
         _toastNotification = toastNotification;
         _dropdownProvider = dropdownProvider;
+        _reportRepository = reportRepository;
     }
 
     public IActionResult NewSale()
@@ -72,13 +75,25 @@ public class SaleController : Controller
             {
                 _toastNotification.AddAlertToastMessage("Please add product for sales");
             }
-            
-            return RedirectToAction("NewSale");
+
+            return RedirectToAction("SalesReport");
         }
         catch (Exception e)
         {
             _toastNotification.AddErrorToastMessage(e.Message);
             return View(vm);
         }
+    }
+
+    public async Task<IActionResult> SalesReport()
+    {
+        var sales = await _reportRepository.GetSalesListAsync();
+        return View(sales);
+    }
+
+    public async Task<IActionResult> SaleDetail(int saleId)
+    {
+        var detail = await _reportRepository.GetSaleDetailedReportAsync(saleId);
+        return View(detail);
     }
 }

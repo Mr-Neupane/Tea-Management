@@ -16,5 +16,5 @@ namespace TeaManagement.Entities
         public decimal NetAmount { get; set; }
         public virtual Product Product { get; set; }
         public virtual Sale Sale { get; set; }
-    }
+        public virtual ProductUnit Unit { get; set; }    }
 }

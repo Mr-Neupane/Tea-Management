@@ -813,6 +813,9 @@ namespace TeaManagement.Migrations
                     b.HasIndex("SaleId")
                         .HasDatabaseName("ix_sale_details_sale_id");
 
+                    b.HasIndex("UnitId")
+                        .HasDatabaseName("ix_sale_details_unit_id");
+
                     b.ToTable("sale_details", "inventory");
                 });
 
@@ -1137,9 +1140,18 @@ namespace TeaManagement.Migrations
                         .IsRequired()
                         .HasConstraintName("fk_sale_details_sales_sale_id");
 
+                    b.HasOne("TeaManagement.Entities.ProductUnit", "Unit")
+                        .WithMany()
+                        .HasForeignKey("UnitId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_sale_details_unit_unit_id");
+
                     b.Navigation("Product");
 
                     b.Navigation("Sale");
+
+                    b.Navigation("Unit");
                 });
 
             modelBuilder.Entity("TeaManagement.Entities.Stakeholder", b =>

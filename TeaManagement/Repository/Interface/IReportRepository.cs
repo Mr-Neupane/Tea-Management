@@ -10,4 +10,8 @@ public interface IReportRepository
     public Task<List<StakeholderReportDto>> GetStakeholderReportAsync(bool isSupplier, int? status);
     public Task<List<UnitReportDto>> GetUnitReportAsync();
     public Task<List<CategoryReportDto>> GetCategoryReportAsync();
+
+    public Task<List<SalesReportDto>> GetSalesListAsync();
+
+    public Task<SaleDetailedReportDto> GetSaleDetailedReportAsync(int saleId);
 }

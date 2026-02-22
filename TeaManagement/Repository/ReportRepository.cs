@@ -43,6 +43,7 @@ public class ReportRepository : IReportRepository
                 ContactNo = x.ContactNumber,
                 FactoryCountry = x.Country,
                 FactoryAddress = x.Address,
+                Status = x.Status
             }).ToListAsync();
         return factories;
     }
@@ -124,5 +125,70 @@ public class ReportRepository : IReportRepository
             Status = x.Status,
         }).ToListAsync();
         return res;
+    }
+
+    public async Task<List<SalesReportDto>> GetSalesListAsync()
+    {
+        var sales = await (from s in _context.Sales
+                join f in _context.Factories on s.FactoryId equals f.Id
+                where s.Status == (int)Status.Active
+                select new SalesReportDto
+                {
+                    Id = s.Id,
+                    SalesDate = s.TxnDate,
+                    SalesNo = s.SaleNo,
+                    BillNo = s.BillNo,
+                    SalesAmount = s.Amount,
+                    FactoryName = f.Name,
+                }
+            ).ToListAsync();
+
+
+        return sales;
+    }
+
+    public async Task<SaleDetailedReportDto> GetSaleDetailedReportAsync(int saleId)
+    {
+        var validateSaleId = await _context.Sales.FindAsync(saleId);
+        if (validateSaleId == null)
+        {
+            throw new Exception("Sale not found");
+        }
+        else
+        {
+            var sales = await (
+                from s in _context.Sales
+                join sd in _context.SaleDetails on s.Id equals sd.SaleId
+                join p in _context.Products on sd.ProductId equals p.Id
+                join u in _context.ProductUnits on sd.UnitId equals u.Id
+                where sd.Status == (int)Status.Active && s.Id == saleId
+                group new { sd, p, u } by new
+                {
+                    s.Id,
+                    s.TxnDate,
+                    s.SaleNo,
+                    s.BillNo
+                }
+                into g
+                select new SaleDetailedReportDto
+                {
+                    SalesDate = g.Key.TxnDate,
+                    SalesNo = g.Key.SaleNo,
+                    BillNo = g.Key.BillNo,
+                    Details = g.Select(x => new DetailsDto
+                    {
+                        ProductName = x.p.Name,
+                        UnitName = x.u.UnitName,
+                        Quantity = x.sd.Quantity,
+                        Amount = x.sd.NetAmount,
+                        Rate = x.sd.Rate,
+                        WaterQuantity = x.sd.WaterQuantity,
+                        BonusAmount = 0,
+                        GrossAmount = x.sd.GrossAmount
+                    }).ToList()
+                }
+            ).SingleAsync();
+            return sales;
+        }
     }
 }
