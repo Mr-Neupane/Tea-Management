@@ -43,6 +43,7 @@ public class ReportRepository : IReportRepository
                 ContactNo = x.ContactNumber,
                 FactoryCountry = x.Country,
                 FactoryAddress = x.Address,
+                Status = x.Status
             }).ToListAsync();
         return factories;
     }
@@ -146,7 +147,7 @@ public class ReportRepository : IReportRepository
         return sales;
     }
 
-    public async Task<List<SaleDetailedReportDto>> GetSaleDetailedReportAsync(int saleId)
+    public async Task<SaleDetailedReportDto> GetSaleDetailedReportAsync(int saleId)
     {
         var validateSaleId = await _context.Sales.FindAsync(saleId);
         if (validateSaleId == null)
@@ -155,22 +156,38 @@ public class ReportRepository : IReportRepository
         }
         else
         {
-            var sales = await _context.Sales.Where(x => x.Id == saleId).SelectMany(x => x.SalesDetails,
-                    (sale, d) => new { sale.TxnDate, sale.SaleNo, sale.BillNo, d })
-                .Select(l =>
-                    new SaleDetailedReportDto
+            var sales = await (
+                from s in _context.Sales
+                join sd in _context.SaleDetails on s.Id equals sd.SaleId
+                join p in _context.Products on sd.ProductId equals p.Id
+                join u in _context.ProductUnits on sd.UnitId equals u.Id
+                where sd.Status == (int)Status.Active && s.Id == saleId
+                group new { sd, p, u } by new
+                {
+                    s.Id,
+                    s.TxnDate,
+                    s.SaleNo,
+                    s.BillNo
+                }
+                into g
+                select new SaleDetailedReportDto
+                {
+                    SalesDate = g.Key.TxnDate,
+                    SalesNo = g.Key.SaleNo,
+                    BillNo = g.Key.BillNo,
+                    Details = g.Select(x => new DetailsDto
                     {
-                        Id = l.d.SaleId,
-                        ProductId = l.d.ProductId,
-                        Quantity = l.d.Quantity,
-                        Rate = l.d.Rate,
-                        WaterQuantity = l.d.WaterQuantity,
+                        ProductName = x.p.Name,
+                        UnitName = x.u.UnitName,
+                        Quantity = x.sd.Quantity,
+                        Amount = x.sd.NetAmount,
+                        Rate = x.sd.Rate,
+                        WaterQuantity = x.sd.WaterQuantity,
                         BonusAmount = 0,
-                        SalesDate = l.TxnDate,
-                        SalesNo = l.SaleNo,
-                        BillNo = l.BillNo,
-                    }).ToListAsync();
-
+                        GrossAmount = x.sd.GrossAmount
+                    }).ToList()
+                }
+            ).SingleAsync();
             return sales;
         }
     }

@@ -1,0 +1,62 @@
+@using NepDate
+@model TeaManagement.Dtos.SaleDetailedReportDto
+
+@{
+    ViewData["Title"] = "Sales Report";
+}
+
+<div class="container mt-5 ">
+    <div>
+        <h6><strong>Sales Date: @(new NepaliDate(Model.SalesDate))</strong></h6>
+        <h6><strong>Sale No: @Model.SalesNo</strong></h6>
+        <h6><strong>Bill No: @Model.BillNo</strong></h6>
+
+    </div>
+
+    <div class="card shadow row justify-content-center ">
+        <div class="scrollable">
+
+            <table class="table table-bordered table-striped ">
+                <thead style="position: sticky; background: #fff; z-index: 10;   top: 0;">
+                <tr>
+                    <th width="50px">SN</th>
+                    <th>Product Name</th>
+                    <th>Unit Name</th>
+                    <th>Gross Quantity</th>
+                    <th>Water Quantity</th>
+                    <th>Net Quantity</th>
+                    <th>Gross Amount</th>
+                    <th>Net Amount</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                @{
+                    int sn = 1;
+                }
+                @foreach (var s in Model.Details)
+                {
+                    <tr>
+                        <td>@sn</td>
+                        <td>@s.ProductName</td>
+                        <td>@s.UnitName</td>
+                        <td>@s.Quantity</td>
+                        <td>@s.WaterQuantity</td>
+                        <td>@(s.Quantity - s.WaterQuantity)</td>
+                        <td>@($"{s.GrossAmount:N2}")</td>
+                        <td>@($"{s.Amount:N2}")</td>
+                    </tr>
+                    sn++;
+                }
+                </tbody>
+                <tfoot>
+                <td colspan="6">Total</td>
+                <td>@Model.Details.Sum(x => x.GrossAmount).ToString("N2")</td>
+                <td>@Model.Details.Sum(x => x.Amount).ToString("N2")</td>
+                </tfoot>
+
+
+            </table>
+        </div>
+    </div>
+</div>

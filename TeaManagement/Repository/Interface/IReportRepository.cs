@@ -13,5 +13,5 @@ public interface IReportRepository
 
     public Task<List<SalesReportDto>> GetSalesListAsync();
 
-    public Task<List<SaleDetailedReportDto>> GetSaleDetailedReportAsync(int saleId);
+    public Task<SaleDetailedReportDto> GetSaleDetailedReportAsync(int saleId);
 }

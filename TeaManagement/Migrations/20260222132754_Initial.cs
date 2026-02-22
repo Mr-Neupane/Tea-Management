@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace TeaManagement.Migrations
 {
     /// <inheritdoc />
-    public partial class initialMigration : Migration
+    public partial class Initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -492,6 +492,13 @@ namespace TeaManagement.Migrations
                         principalTable: "sales",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "fk_sale_details_unit_unit_id",
+                        column: x => x.unit_id,
+                        principalSchema: "inventory",
+                        principalTable: "unit",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -615,6 +622,12 @@ namespace TeaManagement.Migrations
                 schema: "inventory",
                 table: "sale_details",
                 column: "sale_id");
+
+            migrationBuilder.CreateIndex(
+                name: "ix_sale_details_unit_id",
+                schema: "inventory",
+                table: "sale_details",
+                column: "unit_id");
 
             migrationBuilder.CreateIndex(
                 name: "ix_sales_factory_id",

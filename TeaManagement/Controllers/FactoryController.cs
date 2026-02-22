@@ -68,9 +68,9 @@ public class FactoryController : Controller
         return View();
     }
 
-    public async Task<IActionResult> EditFactory(int saleId)
+    public async Task<IActionResult> EditFactory(int factoryId)
     {
-        var fac = await _factoryService.GetFactoryByIdAsync(saleId);
+        var fac = await _factoryService.GetFactoryByIdAsync(factoryId);
         return View(fac);
     }
 
