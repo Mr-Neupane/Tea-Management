@@ -1,0 +1,46 @@
+﻿@using NepDate
+@model List<TeaManagement.Dtos.SalesReportDto>
+
+@{
+    ViewData["Title"] = "Sales Report";
+}
+
+<div class="container mt-5 ">
+    <div class="card shadow row justify-content-center ">
+        <div class="scrollable">
+
+            <table class="table table-bordered table-striped ">
+                <thead style="position: sticky; background: #fff; z-index: 10;   top: 0;">
+                <tr>
+                    <th width="50px">SN</th>
+                    <th>Factory Name</th>
+                    <th width="300px">Sales Date</th>
+                    <th width="200px">Sales No</th>
+                    <th width="100px">Bill No</th>
+                    <th width="200px">Sales Amount</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                @{
+                    int sn = 1;
+                }
+                @foreach (var s in Model)
+                {
+                    <tr>
+                        <td>@sn</td>
+                        <td>@s.FactoryName</td>
+                        <td>@(new NepaliDate(s.SalesDate))</td>
+                        <td><a asp-action="SaleDetail" asp-route-saleId="@s.Id"> @s.SalesNo</a></td>
+                        <td>@s.BillNo</td>
+                        <td>@($"{s.SalesAmount:N2}")</td>
+                    </tr>
+                    sn++;
+                }
+                </tbody>
+
+
+            </table>
+        </div>
+    </div>
+</div>

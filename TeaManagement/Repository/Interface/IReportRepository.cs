@@ -12,4 +12,6 @@ public interface IReportRepository
     public Task<List<CategoryReportDto>> GetCategoryReportAsync();
 
     public Task<List<SalesReportDto>> GetSalesListAsync();
+
+    public Task<List<SaleDetailedReportDto>> GetSaleDetailedReportAsync(int saleId);
 }

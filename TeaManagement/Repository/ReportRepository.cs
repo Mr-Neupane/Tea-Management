@@ -145,4 +145,33 @@ public class ReportRepository : IReportRepository
 
         return sales;
     }
+
+    public async Task<List<SaleDetailedReportDto>> GetSaleDetailedReportAsync(int saleId)
+    {
+        var validateSaleId = await _context.Sales.FindAsync(saleId);
+        if (validateSaleId == null)
+        {
+            throw new Exception("Sale not found");
+        }
+        else
+        {
+            var sales = await _context.Sales.Where(x => x.Id == saleId).SelectMany(x => x.SalesDetails,
+                    (sale, d) => new { sale.TxnDate, sale.SaleNo, sale.BillNo, d })
+                .Select(l =>
+                    new SaleDetailedReportDto
+                    {
+                        Id = l.d.SaleId,
+                        ProductId = l.d.ProductId,
+                        Quantity = l.d.Quantity,
+                        Rate = l.d.Rate,
+                        WaterQuantity = l.d.WaterQuantity,
+                        BonusAmount = 0,
+                        SalesDate = l.TxnDate,
+                        SalesNo = l.SaleNo,
+                        BillNo = l.BillNo,
+                    }).ToListAsync();
+
+            return sales;
+        }
+    }
 }
