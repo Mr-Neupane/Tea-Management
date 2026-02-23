@@ -278,13 +278,14 @@ namespace TeaManagement.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "bonus",
+                name: "bonus_setup",
                 schema: "general_setup",
                 columns: table => new
                 {
                     id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     name = table.Column<string>(type: "text", nullable: false),
+                    effective_date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     factory_id = table.Column<int>(type: "integer", nullable: false),
                     bonus_per_kg = table.Column<decimal>(type: "numeric", nullable: false),
                     ledger_id = table.Column<int>(type: "integer", nullable: true),
@@ -295,9 +296,9 @@ namespace TeaManagement.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("pk_bonus", x => x.id);
+                    table.PrimaryKey("pk_bonus_setup", x => x.id);
                     table.ForeignKey(
-                        name: "fk_bonus_factory_factory_id",
+                        name: "fk_bonus_setup_factory_factory_id",
                         column: x => x.factory_id,
                         principalSchema: "general_setup",
                         principalTable: "factory",
@@ -546,9 +547,9 @@ namespace TeaManagement.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "ix_bonus_factory_id",
+                name: "ix_bonus_setup_factory_id",
                 schema: "general_setup",
-                table: "bonus",
+                table: "bonus_setup",
                 column: "factory_id");
 
             migrationBuilder.CreateIndex(
@@ -664,7 +665,7 @@ namespace TeaManagement.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "bonus",
+                name: "bonus_setup",
                 schema: "general_setup");
 
             migrationBuilder.DropTable(

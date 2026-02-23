@@ -52,7 +52,7 @@ public class SaleController : Controller
                 var dto = new SalesDto
                 {
                     FactoryId = vm.FactoryId,
-                    TxnDate = vm.TxnDate,
+                    TxnDate = vm.TxnDate.ToUniversalTime(),
                     BillNo = vm.BillNo,
                     NetAmount = vm.Amount,
                     Details = saleDetails.Select(x => new SalesDetailsDto

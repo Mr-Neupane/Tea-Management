@@ -113,13 +113,21 @@ public class MigrationController : Controller
                         Name = "Stock Sales",
                         Code = "160.1.1",
                         ParentId = null,
-                        SubParentId = -12
+                        SubParentId = ParentLedgerIdConstraints.SamanBikriAccount
                     },
                     new()
                     {
                         Id = ParentLedgerIdConstraints.OtherExpenses,
                         Name = "Other Expenses",
                         Code = "150.2",
+                        ParentId = -4,
+                        SubParentId = null
+                    },
+                    new()
+                    {
+                        Id = ParentLedgerIdConstraints.OperatingExpenses,
+                        Name = "Operating Expenses",
+                        Code = "150.3",
                         ParentId = -4,
                         SubParentId = null
                     },
@@ -137,7 +145,7 @@ public class MigrationController : Controller
                         Name = "Stock Purchase",
                         Code = "150.1.1",
                         ParentId = null,
-                        SubParentId = -10
+                        SubParentId = ParentLedgerIdConstraints.SamanKharidAccount
                     },
                     new()
                     {
@@ -170,6 +178,14 @@ public class MigrationController : Controller
                         Code = "50",
                         ParentId = -2,
                         SubParentId = null
+                    },
+                    new()
+                    {
+                        Id = LedgerIdConstraints.TeaPluckingExpenses,
+                        Name = "Tea Plucking Wages/Expenses",
+                        Code = "150.3.1",
+                        ParentId = null,
+                        SubParentId = ParentLedgerIdConstraints.OperatingExpenses
                     }
                 };
                 await _context.Ledgers.AddRangeAsync(defLedger);

@@ -1,4 +1,6 @@
-﻿@model TeaManagement.ViewModels.NewBonusVm
+﻿@using TeaManagement.Controllers
+@using TeaManagement.Manager
+@model TeaManagement.ViewModels.NewBonusVm
 
 @{
     ViewData["Title"] = "Add Bonus";
@@ -12,20 +14,26 @@
                 </div>
 
                 <div class="card-body">
-                    <form method="post" asp-action="AddBonus">
+                    <form method="post" id="form" asp-action="AddBonus">
                         <div class="mb-3">
-                            <label asp-for="Name">Bonus Name</label>
-                            <input asp-for="Name" class="form-control"/>
+                            <label asp-for="Name">Bonus Name <strong class="text-danger">*</strong></label>
+                            <input asp-for="Name" required="required" class="form-control"/>
+                            <span asp-validation-for="Name"></span>
                         </div>
 
                         <div class="mb-3">
-                            <label asp-for="BonusPerKg">Bonus Per KG <span class="text-danger">*</span></label>
+                            <label asp-for="EffectiveDate">Effective From <strong class="text-danger">*</strong></label>
+                            <input asp-for="EffectiveDate" type="text" id="date" required="required"
+                                   class="form-control"/>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="BonusPerKg">Bonus Per KG <strong class="text-danger">*</strong></label>
                             <input asp-for="BonusPerKg" type="number" required="required" class="form-control"/>
                         </div>
 
 
                         <div class="mb-3">
-                            <label asp-for="FactoryId">Select Factory</label>
+                            <label asp-for="FactoryId">Select Factory <strong class="text-danger">*</strong></label>
                             <select asp-for="FactoryId" required="required" id="factoryid" class="form-control">
                                 <option>Select Factory..</option>
                                 @if (Model.FactorySelectList != null)
@@ -40,11 +48,13 @@
                         </div>
                         <div class="mb-3 form-check form-check-inline">
                             <label asp-for="IsNewLedger" class="form-check-label">Create Ledger</label>
-                            <input type="checkbox" class="form-check-input" asp-for="IsNewLedger"/>
+                            <input type="checkbox" checked="checked" id="checkbox" class="form-check-input"
+                                   asp-for="IsNewLedger"/>
                         </div>
                         <div class="mb-3">
-                            <label asp-for="LedgerId">Select Bonus Ledger</label>
-                            <select asp-for="LedgerId" required="required" id="ledgerid" class="form-control">
+                            <label asp-for="LedgerId" id="labelForLedgerId" style="display: none">Select Bonus Ledger</label>
+                            <select asp-for="LedgerId" required="required" style="display: none" id="ledgerId"
+                                    class="form-control">
                                 <option>Select Ledger..</option>
                                 @if (Model.BonusLedgerList != null)
                                 {
@@ -67,3 +77,22 @@
         </div>
     </div>
 </div>
+
+<script>
+    let checkboxElm = document.getElementById('checkbox');
+    checkboxElm.addEventListener('change', (event) => {
+        const isChecked = checkboxElm.checked;
+
+        let inputElm = document.getElementById("ledgerId");
+        let labelElm = document.getElementById("labelForLedgerId");
+        if (!isChecked) {
+            inputElm.style.display = "block";
+            labelElm.style.display = "block";
+        } else {
+            inputElm.style.display = "none";
+            labelElm.style.display = "none";
+        }
+
+
+    })
+</script>

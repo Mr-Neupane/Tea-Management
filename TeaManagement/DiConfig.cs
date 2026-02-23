@@ -46,6 +46,7 @@ public static class DiConfig
     {
         builder.Services.AddScoped<IdProvider>();
         builder.Services.AddScoped<DropdownProvider>();
+        builder.Services.AddScoped<BonusDetailProvider>();
     }
 
     private static void UseManagers(this WebApplicationBuilder builder)

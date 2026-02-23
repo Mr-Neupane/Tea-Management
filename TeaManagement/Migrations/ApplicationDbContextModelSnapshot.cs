@@ -99,6 +99,10 @@ namespace TeaManagement.Migrations
                         .HasColumnType("numeric")
                         .HasColumnName("bonus_per_kg");
 
+                    b.Property<DateTime>("EffectiveDate")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("effective_date");
+
                     b.Property<int>("FactoryId")
                         .HasColumnType("integer")
                         .HasColumnName("factory_id");
@@ -129,12 +133,12 @@ namespace TeaManagement.Migrations
                         .HasColumnName("status");
 
                     b.HasKey("Id")
-                        .HasName("pk_bonus");
+                        .HasName("pk_bonus_setup");
 
                     b.HasIndex("FactoryId")
-                        .HasDatabaseName("ix_bonus_factory_id");
+                        .HasDatabaseName("ix_bonus_setup_factory_id");
 
-                    b.ToTable("bonus", "general_setup");
+                    b.ToTable("bonus_setup", "general_setup");
                 });
 
             modelBuilder.Entity("TeaManagement.Entities.Category", b =>
@@ -987,7 +991,7 @@ namespace TeaManagement.Migrations
                         .HasForeignKey("FactoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
-                        .HasConstraintName("fk_bonus_factory_factory_id");
+                        .HasConstraintName("fk_bonus_setup_factory_factory_id");
 
                     b.Navigation("Factory");
                 });
