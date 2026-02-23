@@ -2,7 +2,7 @@
 
 namespace TeaManagement.Entities
 {
-    [Table("bonus", Schema = "general_setup")]
+    [Table("bonus_setup", Schema = "general_setup")]
     public class AddBonus : BaseEntity
     {
         public string Name { get; set; }

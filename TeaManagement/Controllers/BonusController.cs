@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using NToastNotify;
+using TeaManagement.Constraints;
 using TeaManagement.Dtos;
 using TeaManagement.Manager;
 using TeaManagement.Providers;
@@ -59,7 +60,7 @@ public class BonusController : Controller
                     {
                         LedgerName = vm.Name.Trim(),
                         LedgerCode = null,
-                        SubParentId = -3,
+                        SubParentId = ParentLedgerIdConstraints.OtherIncome,
                         ParentId = null,
                         IsParent = false
                     };
