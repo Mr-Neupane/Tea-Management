@@ -19,6 +19,7 @@ public class BonusService : IBonusService
         var bonus = new AddBonus
         {
             Name = dto.Name,
+            EffectiveDate = dto.EffDate.ToUniversalTime(),
             FactoryId = dto.FactoryId,
             BonusPerKg = dto.BonusPerKg,
             LedgerId = dto.LedgerId,

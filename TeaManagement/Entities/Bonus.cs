@@ -6,6 +6,8 @@ namespace TeaManagement.Entities
     public class AddBonus : BaseEntity
     {
         public string Name { get; set; }
+
+        public DateTime EffectiveDate { get; set; }
         public int FactoryId { get; set; }
         public decimal BonusPerKg { get; set; }
         public int? LedgerId { get; set; }

@@ -99,6 +99,10 @@ namespace TeaManagement.Migrations
                         .HasColumnType("numeric")
                         .HasColumnName("bonus_per_kg");
 
+                    b.Property<DateTime>("EffectiveDate")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("effective_date");
+
                     b.Property<int>("FactoryId")
                         .HasColumnType("integer")
                         .HasColumnName("factory_id");
